@@ -1,3 +1,0 @@
-{# <div class="w-full rounded overflow-hidden dark:opacity-80">
-	<a href="/"><img src="{{ site.author.email | gravatar(200) }}" alt="Gravatar"  class="w-full h-full object-cover"></a>
-</div> #}

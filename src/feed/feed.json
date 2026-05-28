@@ -1,6 +1,4 @@
 {
-	"layout": "feed.njk",
-	"templateEngineOverride": "njk,md",
-	"footerVariant": "feed",
-	"hidepageforseo": true
+	"permalink": false,
+	"templateEngineOverride": "njk,md"
 }

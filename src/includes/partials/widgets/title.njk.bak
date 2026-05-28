@@ -1,3 +1,0 @@
-<div class="flex items-center justify-center py-small px-large rounded bg-black text-white text-center w-full h-full">
-	<h1 class="text-xl font-extrabold block leading-none tracking-tightest whitespace-nowrap">{{ site.name }}</h1>
-</div>

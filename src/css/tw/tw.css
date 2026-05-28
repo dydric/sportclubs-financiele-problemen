@@ -10,32 +10,23 @@
 	--color-surface: var(--surface-bg);
 
 	/* Accent */
-	--color-accent-1: theme(colors.blue.700);
+	--color-accent-1: theme(colors.orange.400);
 
 	/* Header */
 	--color-header-bg: theme(colors.neutral.950);
 	--color-header-fg: theme(colors.neutral.100);
-
-	/* Footer */
-	--color-footer-bg: theme(colors.neutral.100);
-	--color-footer-fg: theme(colors.neutral.800);
 
 	/* Scrollbar */
 	--sb-track-color: var(--page-bg);
 	--sb-thumb-color: var(--color-accent-1);
 	--sb-size: 10px;
 
-	/* Tekst / links (dark mode aware via :root vars) */
+	/* Tekst / links */
 	--color-fg: var(--fg);
 	--color-link-hover: var(--link-hover);
 
-	/* Borders (dark mode aware via :root vars) */
+	/* Borders */
 	--color-border: var(--border);
-	--color-footer-border: var(--footer-border);
-
-	/* Later toe te voegen: */
-	/* --color-fg-muted: var(--fg-muted); */
-	/* --color-fg-accent: var(--fg-accent); */
 
 /* Fonts */
 --font-sans: "PPNeueMontreal", system-ui, sans-serif;
@@ -57,7 +48,6 @@
 
 	/* Spacing tokens */
 	--spacing-header: var(--header-height);
-	--spacing-footer: calc(var(--footer-height, 74px) + var(--dock-gap, 2rem));
 	--spacing-container: var(--container-px);
 
 	/* Custom sizes */
@@ -91,32 +81,9 @@
 	--header-height: 88px;
 	--container-px: 1.5rem;
 	--outer-px: 1rem;
-	--dock-gap: calc(2rem + env(safe-area-inset-bottom, 0px));
-	--dock-item-h: 2.375rem; /* 38px — hoogte van buttons/selects in het dock */
 
-	--page-bg: theme(colors.stone.200);
+	--page-bg: theme(colors.neutral.100);
 	--surface-bg: theme(colors.neutral.100);
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--page-bg: theme(colors.neutral.900);
-		--surface-bg: theme(colors.neutral.950);
-
-		--fg: #f0f0f0;
-
-		--border: theme(colors.stone.700);
-		--color-footer-bg: #0f0f0f;
-		--color-footer-fg: #f0f0f0;
-
-		/* Header */
-		--color-header-bg: theme(colors.neutral.950);
-		--color-header-fg: theme(colors.neutral.100);
-
-		/* Footer */
-		--color-footer-bg: theme(colors.neutral.950);
-		--color-footer-fg: theme(colors.neutral.100);
-	}
 }
 
 @media (width >= theme(--breakpoint-sm)) {
@@ -139,7 +106,6 @@
 
 @media (width >= theme(--breakpoint-lg)) {
 	:root {
-		--dock-item-h: 2.625rem; /* 42px — groter door grotere font-size op desktop */
 		--font-size-xs: 1rem;
 		--font-size-sm: 1.125rem;
 		--font-size-md: 1.25rem;
@@ -157,7 +123,6 @@
 
 @media (width >= theme(--breakpoint-xl)) {
 	:root {
-		--dock-item-h: 2.875rem; /* 46px */
 		--font-size-xs: 1.125rem;
 		--font-size-sm: 1.25rem;
 		--font-size-md: 1.33rem;
@@ -170,15 +135,6 @@
 		--flow: 2rem;
 		--double-flow: 4rem;
 		--header-height: 120px;
-		--dock-gap: calc(2.5rem + env(safe-area-inset-bottom, 0px));
-	}
-}
-
-@media (display-mode: standalone) {
-	:root { --dock-gap: calc(2.25rem + env(safe-area-inset-bottom, 0px)); }
-
-	@media (width >= theme(--breakpoint-lg)) {
-		:root { --dock-gap: calc(2.5rem + env(safe-area-inset-bottom, 0px)); }
 	}
 }
 

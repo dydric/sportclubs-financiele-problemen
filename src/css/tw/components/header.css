@@ -16,7 +16,4 @@
 		pointer-events: auto;
 	}
 
-	.custom-header .u-button {
-		height: var(--dock-item-h);
-	}
 }

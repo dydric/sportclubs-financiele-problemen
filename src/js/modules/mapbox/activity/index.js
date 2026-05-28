@@ -1,1 +1,0 @@
-export { initActivityMaps } from './lifecycle';

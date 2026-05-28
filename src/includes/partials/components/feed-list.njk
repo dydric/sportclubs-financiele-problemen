@@ -1,27 +1,17 @@
 {% macro feedList(items) %}
   {% for item in items %}
-    <a href="{{ item.url }}" class="group block border-t-2 border-border dark:border-stone-700 no-underline hover:bg-stone-100 dark:hover:bg-stone-100 focus-visible:bg-white hover:text-neutral-800 focus-visible:text-neutral-800 outline-0 {% if loop.last %} border-b-2{% endif %}">
-      <span class="container block py-3">
-
-        <span class="flex flex-col lg:flex-row lg:items-baseline">
-          <span class="lg:shrink-0">
-            <span class="u-text-xl leading-[1.1] lg:tracking-tight mr-[.25ch]">{{ item.data.title }}</span>
-            {% if item.data.sticky %}
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 471 539" class="inline-block w-4 md:w-5 align-baseline mr-[.5ch]" aria-hidden="true" focusable="false"><path class="fill-neutral-500" d="M219 285c15 9 20 28 11 44L118 523a32 32 0 1 1-55-32l112-194c9-16 28-21 44-12"/><path class="fill-red-600" d="M189 16c9-15 28-21 44-12l221 128a32 32 0 1 1-32 56l-25-15-77 157c21 35 30 78 21 121v3q-5 15-19 23-15 6-29-1L16 316a32 32 0 0 1-5-52l2-2c33-29 75-43 116-42l97-146-25-14c-16-9-21-29-12-44"/></svg>
-            {% endif %}
-          </span>
-
-          {% if item.data.tags %}
-            <span class="font-handwritten text-accent-1 dark:text-neutral-500 group-hover:text-accent-1 group-focus-visible:text-accent-1 dark:group-hover:text-accent-1 dark:group-focus-visible:text-accent-1 truncate min-w-0 mt-1 lg:mt-0 text-sm leading-none" aria-label="Tags: {% for tag in item.data.tags %}{% if tag != 'feed' %}{{ tag }}{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}">
-              {%- set sep = joiner(", ") -%}
-              {%- for tag in item.data.tags -%}
-                {%- if tag != "feed" -%}{{ sep() }}{{ tag }}{%- endif -%}
-              {%- endfor -%}
-            </span>
-          {% endif %}
+    <details class="group border-t-2 border-border{% if loop.last %} border-b-2{% endif %}">
+      <summary class="container block py-3 cursor-pointer list-none select-none">
+        <span class="flex items-baseline gap-3">
+          <span class="u-text-xl leading-[1.1] lg:tracking-tight flex-1">{{ item.data.title }}</span>
+          <span class="shrink-0 text-neutral-400 transition-transform duration-200 group-open:rotate-180 font-mono text-sm" aria-hidden="true">▼</span>
         </span>
-
-      </span>
-    </a>
+      </summary>
+      <div class="container pb-6 pt-2">
+        <div class="flow content max-w-xl md:max-w-2xl lg:max-w-3xl">
+          {{ item.templateContent | safe }}
+        </div>
+      </div>
+    </details>
   {% endfor %}
 {% endmacro %}

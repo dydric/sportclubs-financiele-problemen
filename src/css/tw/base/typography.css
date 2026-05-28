@@ -3,7 +3,7 @@
 	/* Base link style */
 	a {
 		@apply underline decoration-2 underline-offset-3;
-		@apply decoration-neutral-300 dark:decoration-stone-500 ;
+		@apply decoration-neutral-300 ;
 	}
 
 	img.emoji {
@@ -36,6 +36,7 @@
 
 		> h2 {
 			@apply text-lg font-bold leading-tight;
+			+ * { margin-top: 0.25rem; }
 		}
 
 		> h3 {
@@ -84,22 +85,22 @@
 		}
 
 		> pre {
-			@apply bg-neutral-900 text-neutral-100 dark:bg-black dark:text-stone-100 p-4 overflow-x-auto text-sm font-mono leading-relaxed;
+			@apply bg-neutral-900 text-neutral-100 p-4 overflow-x-auto text-sm font-mono leading-relaxed;
 			border-radius: var(--radius-sm);
 		}
 
 		> code {
-			@apply text-sm font-mono bg-neutral-200/70 dark:bg-stone-800 px-1.5 py-1;
+			@apply text-sm font-mono bg-neutral-200/70 px-1.5 py-1;
 		}
 
 		p code,
 		li code,
 		td code {
-			@apply text-sm font-mono bg-neutral-200/70 dark:bg-stone-800 px-2;
+			@apply text-sm font-mono bg-neutral-200/70 px-2;
 		}
 
 		> hr {
-			@apply border-t border-neutral-200 dark:border-stone-700 my-[--double-flow,1.5rem];
+			@apply border-t border-neutral-200 my-[--double-flow,1.5rem];
 		}
 
 		> img,
@@ -187,20 +188,6 @@
 				font-size: var(--text-md);
 			}
 
-			@media (prefers-color-scheme: dark) {
-				@apply border-neutral-800 bg-stone-900;
-
-				> thead {
-					th {
-						@apply border-neutral-800;
-					}
-				}
-
-				> tbody tr + tr td,
-				> tbody tr + tr th {
-					@apply border-neutral-800;
-				}
-			}
 		}
 
 	}

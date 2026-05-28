@@ -1,7 +1,0 @@
-{% macro rssLink(url, label = "RSS feed", size = "") %}
-  <a href="{{ url }}" class="u-button u-button--icon u-button--rss{% if size === 'sm' %} u-button--sm{% endif %}" aria-label="{{ label }}" title="{{ label }}">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 333333 333333" aria-hidden="true" focusable="false">
-      <path d="M44382 244427C19901 244427 6 264387 6 288717c0 24452 19893 44205 44376 44205 24556 0 44437-19754 44437-44205 0-24328-19875-44290-44437-44290zM49 113241v63895c41608 0 80707 16271 110159 45748 29422 29391 45667 68681 45667 110448h64167c0-121341-98731-220072-219993-220072v-20zM130 0v63907c148372 0 269117 120869 269117 269407l64080 6C333327 149577 183829 7 135 7l-6-6z" fill="currentColor"/>
-    </svg>
-  </a>
-{% endmacro %}

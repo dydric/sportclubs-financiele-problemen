@@ -3,63 +3,8 @@ layout: base
 ---
 {% include 'header.njk' %}
 
-{% if type == "activity" or type == "poi" %}
-<main class="activity-main relative flex flex-col flex-1 overflow-hidden bg-page">
-	{% include 'feed/type-renderer.njk' %}
-</main>
-{% else %}
 <main class="scroll-container flex-1 block overflow-x-clip overflow-y-auto bg-page pt-header">
-	<div class="w-full pt-8 xl:pt-12 pb-footer">
-
-		<div class="container pb-12 xl:lg-16">
-			<div class="max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
-
-				<div class="mb-4 lg:mb-8">
-					<h1 class="u-text-3xl me-2">{{ title or page.fileSlug }}</h1>
-				</div>
-
-				{% if image %}
-				{% set imageSrc = image if image.startsWith("http") else "/media/" + image %}
-				<figure class="feed-hero mb-6 lg:mb-10">
-					<img src="{{ imageSrc }}" alt="{{ imageAlt or title }}" eleventy:widths="400,800,1200" sizes="100vw" loading="eager" decoding="auto" fetchpriority="high" class="w-full h-auto">
-					{% if imageCaption %}<figcaption class="mt-2 text-sm opacity-70">{{ imageCaption }}</figcaption>{% endif %}
-				</figure>
-				{% endif %}
-
-				<div class="flow content{% if type == 'recipe' %} recipe{% endif %}" id="fc">
-					{% if type == "recipe" %}
-						{% include 'feed/type-renderer.njk' %}
-					{% endif %}
-					{{ content | safe }}
-					{% if type != "music" and type != "recipe" %}
-						{% include 'feed/type-renderer.njk' %}
-					{% endif %}
-				</div>
-				{% if type != "recipe" %}
-				<script>(function(){var u=navigator.userAgent;if(!(/iP(hone|ad|od)/.test(u)||(navigator.maxTouchPoints>1&&/Macintosh/.test(u)))||!/Version\//.test(u)||!/Safari/.test(u))return;var c=document.getElementById("fc");if(!c)return;var f=document.createDocumentFragment();while(c.firstChild)f.appendChild(c.firstChild);c.classList.add("is-deferred");addEventListener("load",function(){setTimeout(function(){c.appendChild(f);c.classList.remove("is-deferred");c.classList.add("is-revealed");if(window.twemoji)twemoji.parse(c);document.dispatchEvent(new CustomEvent('ios:content-revealed'))},1500)})})()</script>
-				{% endif %}
-
-				{% include 'components/likes.njk' %}
-
-			</div>
-
-			{% if type == "music" %}
-				<div class="mt-8 lg:mt-12">
-					{% include 'feed/type-renderer.njk' %}
-				</div>
-			{% endif %}
-		</div>
-
+	<div class="w-full pt-8 xl:pt-12 pb-16">
+		{{ content | safe }}
 	</div>
 </main>
-{% endif %}
-
-{% include 'footer.njk' %}
-
-{% if type == "activity" %}
-<script src="/js/feeds/activity.js?v={% cacheBuster %}" defer></script>
-{% elif type == "poi" %}
-<script src="/js/feeds/poi.js?v={% cacheBuster %}" defer></script>
-{% elif type == "recipe" %}
-<script src="/js/feeds/recipe.js?v={% cacheBuster %}" defer></script>
-{% endif %}

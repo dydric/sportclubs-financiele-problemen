@@ -1,11 +1,1 @@
-{% if type == "activity" %}
-	{% include "feed/types/activity.njk" %}
-{% elif type == "poi" %}
-	{% include "feed/types/poi.njk" %}
-{% elif type == "music" %}
-	{% include "feed/types/music.njk" %}
-{% elif type == "recipe" %}
-	{% include "feed/types/recipe.njk" %}
-{% else %}
-	{% include "feed/types/default.njk" %}
-{% endif %}
+{% include "feed/types/default.njk" %}

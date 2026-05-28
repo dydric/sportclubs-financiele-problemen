@@ -10,10 +10,10 @@
     "b:11ty": "eleventy",
     "w:tw": "tailwindcss -i src/css/tw/tw.css -o _site/css/tw.css --watch",
     "b:tw": "tailwindcss -i src/css/tw/tw.css -o _site/css/tw.css --minify",
-    "w:js": "esbuild src/js/core.js 'src/js/feeds/*.js' --outbase=src/js --outdir=_site/js --bundle --watch",
-    "b:js": "esbuild src/js/core.js 'src/js/feeds/*.js' --outbase=src/js --outdir=_site/js --bundle --minify",
+    "w:js": "esbuild src/js/core.js --outbase=src/js --outdir=_site/js --bundle --watch",
+    "b:js": "esbuild src/js/core.js --outbase=src/js --outdir=_site/js --bundle --minify",
     "watch": "cross-env NODE_ENV=development npm-run-all --parallel w:* ",
-    "dev": "npx netlify dev",
+    "dev": "npm run watch",
     "build": "cross-env NODE_ENV=production npm-run-all clean b:*"
   },
   "devDependencies": {
