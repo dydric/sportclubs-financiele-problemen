@@ -13,6 +13,8 @@ function animateOpen(details, summary, content) {
     details.style.height = '';
     details.style.overflow = '';
     summary.setAttribute('aria-expanded', 'true');
+
+    summary.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };
 }
 

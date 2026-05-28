@@ -1,4 +1,8 @@
 @layer components {
+	details > summary {
+		scroll-margin-top: calc(var(--header-height) + 0.5rem);
+	}
+
 	.custom-header {
 		min-height: var(--header-height);
 		padding-left: var(--outer-px);
