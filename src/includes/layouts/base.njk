@@ -5,19 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>{{ title }}{% if page.url != "/" %} - {{ site.name }}{% endif %}</title>
-		{% if hidepageforseo -%}
 		<meta name="robots" content="noindex, nofollow">
-		{%- else -%}
-		<meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
-		<meta name="robots" content="index,follow">
-		<meta name="googlebot" content="index,follow">
-		<meta name="google" content="nositelinkssearchbox">
-		<meta name="google" content="notranslate">
-		<meta name="generator" content="eleventy">
-		{%- endif %}
+		<meta name="googlebot" content="noindex, nofollow">
 
 		<base href="{{ page.url }}">
-  	<link rel="canonical" href="{{ site.url }}{{ page.url }}">
 
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="application-name" content="{{ site.name }}">
