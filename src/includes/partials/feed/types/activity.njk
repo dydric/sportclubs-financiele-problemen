@@ -1,0 +1,66 @@
+{% set stravaId = strava if strava else null %}
+{% set activity = stravaActivities.byId[stravaId|string] if stravaId and stravaActivities and stravaActivities.byId else null %}
+{% set route = activity.map.summary_polyline if activity and activity.map and activity.map.summary_polyline else null %}
+{% set stream = stravaActivities.streamsById[stravaId|string] if stravaId and stravaActivities and stravaActivities.streamsById else null %}
+{% set hasStreamRoute = stream and ((stream.latlng and stream.latlng.length > 1) or stream.p) %}
+{% set privacyZones = site.mapPrivacyZones if site and site.mapPrivacyZones else [] %}
+
+{% if route or hasStreamRoute %}
+	{% if hasStreamRoute %}
+		<script id="activity-stream-{{ stravaId }}" type="application/json">{{ stream | dump | safe }}</script>
+	{% endif %}
+	{% if privacyZones.length %}
+		<script id="activity-privacy-zones-{{ stravaId }}" type="application/json">{{ privacyZones | dump | safe }}</script>
+	{% endif %}
+
+	<div class="activity relative w-full flex-1 overflow-hidden flex flex-col lg:flex-row">
+		<div class="activity-map w-full flex shrink-0 grow-0 items-stretch min-h-[50svh] max-h-[50svh] lg:min-h-0 lg:max-h-none lg:flex-1 lg:order-1 border-b border-neutral-200 dark:border-stone-700 lg:border-b-0">
+			<div
+				class="flex-auto w-full"
+				data-mapbox-activity
+				data-token-endpoint="/.netlify/functions/mapbox-token"
+				data-route="{{ route or '' }}"
+				data-sport-type="{{ activity.sport_type or activity.type }}"
+				{% if hasStreamRoute %}data-stream-id="activity-stream-{{ stravaId }}"{% endif %}
+				{% if privacyZones.length %}data-safe-zones-id="activity-privacy-zones-{{ stravaId }}"{% endif %}
+			></div>
+		</div>
+
+		<div class="activity-overlay relative flex-1 overflow-hidden lg:flex-1/2 lg:grow-0 lg:max-w-4xl! lg:order-2 lg:border-l border-neutral-200 dark:border-stone-700">
+			<div class="scroll-container h-full overflow-y-auto p-container lg:pt-header">
+				{% if image %}
+				{% set imageSrc = image if image.startsWith("http") else "/media/" + image %}
+				<figure class="activity-hero -mx-container -mt-container mb-4 lg:mb-6">
+					<img src="{{ imageSrc }}" alt="{{ imageAlt or title }}" eleventy:widths="400,800,1200" sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" decoding="auto" fetchpriority="high" class="w-full object-cover max-h-[40vh]">
+				</figure>
+				{% endif %}
+				<h1 class="u-text-2xl me-2">{{ title or page.fileSlug }}</h1>
+				{% if activity %}
+					<div class="u-text-base flex gap-4">
+						{# <div><strong>Type:</strong> {{ activity.sport_type or activity.type }}</div> #}
+						{% if activity.distance %}
+							<div>{{ (activity.distance / 1000) | round(2) }}km</div>
+						{% endif %}
+						{% if activity.moving_time %}
+							{% set totalSeconds = activity.moving_time | int %}
+							{% set hours = (totalSeconds / 3600) | int %}
+							{% set minutes = ((totalSeconds % 3600) / 60) | int %}
+							{% set seconds = (totalSeconds % 60) | int %}
+							{% set mm = ('0' + (minutes | string)) if minutes < 10 else (minutes | string) %}
+							{% set ss = ('0' + (seconds | string)) if seconds < 10 else (seconds | string) %}
+							<div>{% if hours > 0 %}{{ hours }}:{{ mm }}:{{ ss }}{% else %}{{ mm }}:{{ ss }}{% endif %}</div>
+						{% endif %}
+					</div>
+				{% endif %}
+				<div class="flow content">{{ content | safe }}</div>
+				{% include 'components/likes.njk' %}
+				<div class="pb-footer" aria-hidden="true"></div>
+			</div>
+		</div>
+	</div>
+{% else %}
+	<div class="container py-8">
+		<h1 class="u-text-2xl me-2">{{ title or page.fileSlug }}</h1>
+		<p class="u-text-sm opacity-70 mt-6">Geen route gevonden. Controleer of het `strava` id klopt en of de activiteit een route bevat.</p>
+	</div>
+{% endif %}

@@ -1,0 +1,48 @@
+@layer components {
+
+	/* Gallery container — breakout wordt afgehandeld in typography.css via .content > .gallery */
+	.gallery {
+		display: flex;
+		flex-direction: column;
+		gap: var(--gallery-gap, 4px);
+	}
+
+	/* Rij: flex-grow per item wordt inline gezet op de aspect ratio */
+	.gallery-row {
+		display: flex;
+		width: 100%;
+		gap: var(--gallery-gap, 4px);
+	}
+
+	/* Item: flex-grow & flex-basis worden inline gezet door de shortcode */
+	.gallery-item {
+		min-width: 0;
+		overflow: hidden;
+		border-radius: var(--radius-sm);
+	}
+
+	.gallery-item img,
+	.gallery-item picture,
+	.gallery-item video {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+
+	/* Responsive: op hele smalle schermen 1 kolom */
+	@media (max-width: 479px) {
+		.gallery-row {
+			flex-direction: column;
+		}
+
+		.gallery-item {
+			flex-grow: 0 !important;
+			flex-basis: auto !important;
+			/* aspect-ratio uit inline style bepaalt de hoogte op basis van breedte */
+			width: 100%;
+		}
+	}
+
+}

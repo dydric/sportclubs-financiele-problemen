@@ -1,0 +1,27 @@
+<div class="w-unit-5 col-span-5 lg:w-unit-8 lg:col-span-8">
+	<div class="grid grid-cols-3 lg:grid-cols-5 flex-wrap bg-neutral-800 dark:bg-black p-large gap-small rounded">
+		<div class="col-span-3 lg:col-span-5 text-white dark:text-gray-200">
+			<h2 class="text-lg font-extrabold block tracking-tight whitespace-nowrap w-full ">Top Albums</h2>
+			<span class="text-base font-semibold tracking-tight whitespace-nowrap truncate opacity-50">Afgelopen maand</span>
+		</div>
+
+		{%- set max_items = 6 -%}
+		{%- set count = 1 -%}
+		{% for album in lastfm.topAlbums %}
+			{%- if count <= max_items -%}
+
+				{% if album.image %}
+					<a href="https://last.fm/music/{{ album.artist | url | safe }}/{{ album.name | url | safe }}"
+						target="_blank" rel="noopener noreferrer"
+						class="group flex flex-col justify-center rounded-sm overflow-hidden {% if count > max_items - 1 %} lg:hidden {% endif %}">
+						<img src="{{ album.image | safe }}"
+							eleventy:widths="210"
+							alt="{{ album.name | safe }}"
+							class="h-full w-full object-cover">
+					</a>
+				{%- set count = count + 1 -%} {# Verhoog de teller #}
+				{% endif %}
+			{%- endif -%}
+		{% endfor %}
+	</div>
+</div>

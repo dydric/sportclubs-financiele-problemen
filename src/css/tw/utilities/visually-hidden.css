@@ -1,0 +1,7 @@
+@layer utilities {
+	.visually-hidden {
+		@apply absolute overflow-hidden p-0 border-0;
+		@apply whitespace-nowrap w-px h-px;
+		clip: rect(0 0 0 0);
+	}
+}

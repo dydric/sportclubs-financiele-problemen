@@ -1,0 +1,34 @@
+{%- set max_items = 4 -%}
+{%- set count = 1 -%}
+
+{% if letterboxd.data.items and letterboxd.data.items.length > 0 %}
+<div class="swiper-slide swiper-slide--letterboxd rounded w-unit-4 h-unit-4 overflow-hidden relative" data-daysago="{{ letterboxd.data.items[0].pubDate | daysAgo }}">
+	<div class="flex bg-gradient-to-br from-[#2c3440] to-[#14181c] p-large h-full w-full rounded items-center justify-end">
+
+	<div class="absolute z-50 left-large top-large w-unit-1/2 h-unit-1/2 bg-[#456] rounded-sm text-white">
+		<a href="https://letterboxd.com/Dydric/" target="_blank" rel="noopener noreferrer">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 380 140" class="w-full h-full scale-[66%]"><path fill="currentcolor" fill-rule="evenodd" d="M379.012 70c0 38.66-31.375 70-70.079 70-25.399 0-47.642-13.497-59.933-33.702.156.256.313.511.473.765C256.201 96.315 260.09 83.611 260.09 70s-3.889-26.315-10.617-37.063C261.855 13.156 283.855 0 308.933 0c38.704 0 70.079 31.34 70.079 70ZM0 70C0 31.34 31.375 0 70.079 0c25.399 0 47.642 13.497 59.933 33.703a72.795 72.795 0 0 0-.473-.766C122.811 43.685 118.921 56.389 118.921 70s3.89 26.315 10.618 37.063C117.156 126.844 95.156 140 70.079 140 31.375 140 0 108.66 0 70Z" clip-rule="evenodd"/><path fill="currentcolor" d="M249.394 32.937C237.011 13.156 215.011 0 189.933 0c-25.078 0-47.078 13.156-59.46 32.937C137.201 43.685 141.09 56.389 141.09 70s-3.889 26.315-10.617 37.063a41.581 41.581 0 0 1-.353-.57l-.12-.195C142.291 126.503 164.534 140 189.933 140c25.077 0 47.078-13.157 59.461-32.937-6.729-10.748-10.618-23.452-10.618-37.063s3.889-26.315 10.618-37.063Z"/></svg>
+		</a>
+	</div>
+
+	<div class="absolute inset-0 flex m-large mt-unit gap-0 accordion">
+		{% for movie in letterboxd.data.items  %}
+			{% set movielink = movie.link | replace('/dydric', '') %}
+			{%- if loop.index <= max_items -%}
+
+				{%- set item_class = "w-1/6" -%}
+				{%- if loop.index == 1 -%}
+					{%- set item_class = "w-3/6" -%}
+				{%- endif -%}
+
+				<button class="accordion-btn flex-auto relative {{ item_class }} text-center border-0 outline-none bg-transparent transition-all duration-300 ease-in-out" data-index="{{ loop.index }} ">
+					<img src="{{ movie.cover }}" eleventy:widths="210" alt="{{ movie.filmTitle }}" class="absolute inset-0 w-full h-full object-cover shadow-lg hover:-translate-y-2 rounded-sm transition-transform duration-150 ease-in-out">
+				</button>
+
+				{%- set count = count + 1 -%} {# Verhoog de teller #}
+			{%- endif -%}
+		{% endfor %}
+		</div>
+	</div>
+</div>
+{% endif %}

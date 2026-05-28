@@ -1,0 +1,18 @@
+---
+title: Archief
+layout: default
+permalink: /archief/
+hidepageforseo: true
+feedUrl: /rss/index.xml
+feedTitle: Feed
+footerLinkUrl: /
+footerLinkLabel: Terug naar home
+footerShowCategoryPicker: true
+---
+{% from "components/feed-list.njk" import feedList %}
+
+<div class="container xl:py-6 mb-8">
+  <h1 class="u-text-2xl">{{ title }}</h1>
+</div>
+
+{{ feedList(collections.feed) }}

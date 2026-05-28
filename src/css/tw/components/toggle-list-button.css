@@ -1,0 +1,117 @@
+@layer components {
+	.toggle-list-button {
+		@apply flex w-full items-stretch;
+	}
+
+	.toggle-list-button:focus-visible {
+		@apply relative z-10;
+	}
+
+	.toggle-list-marker {
+		@apply min-h-11 shrink-0 flex items-center justify-center;
+	}
+
+	.toggle-list-track {
+		@apply flex-1 min-w-0 min-h-11 px-2 flex items-center gap-2 text-neutral-700;
+	}
+
+	.toggle-list-heading {
+		@apply flex-1 min-w-0 truncate font-[550] tracking-wide;
+	}
+
+	.toggle-list-subheading {
+		@apply ml-1 text-[0.72em] uppercase text-neutral-500;
+	}
+
+	.toggle-list-favorite {
+		@apply shrink-0 block size-3;
+		color: currentColor;
+	}
+
+	.toggle-list-favorite svg {
+		@apply w-full h-full block;
+	}
+
+	.toggle-list-button.is-favorite .toggle-list-track {
+		@apply text-accent-1;
+	}
+
+	.toggle-list-button:hover .toggle-list-track,
+	.toggle-list-button:hover .toggle-list-marker,
+	.toggle-list-button:focus-visible .toggle-list-track,
+	.toggle-list-button:focus-visible .toggle-list-marker {
+		@apply bg-neutral-100;
+	}
+
+	.toggle-list-button.is-active .toggle-list-track,
+	.toggle-list-button.is-playing .toggle-list-track,
+	.toggle-list-button.is-active .toggle-list-marker,
+	.toggle-list-button.is-playing .toggle-list-marker {
+		background: color-mix(in oklab, var(--color-accent-1) 9%, transparent);
+	}
+
+	.toggle-list-button.is-active .toggle-list-track,
+	.toggle-list-button.is-playing .toggle-list-track {
+		@apply text-accent-1;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.toggle-list-track {
+			@apply text-white;
+		}
+
+		.toggle-list-button.is-favorite .toggle-list-track {
+			color: color-mix(in oklab, var(--color-accent-1) 25%, white);
+		}
+
+		.toggle-list-button:hover .toggle-list-track,
+		.toggle-list-button:hover .toggle-list-marker,
+		.toggle-list-button:focus-visible .toggle-list-track,
+		.toggle-list-button:focus-visible .toggle-list-marker {
+			background: color-mix(in oklab, theme(colors.neutral.800) 70%, transparent);
+		}
+
+		.toggle-list-button.is-active .toggle-list-track,
+		.toggle-list-button.is-playing .toggle-list-track,
+		.toggle-list-button.is-active .toggle-list-marker,
+		.toggle-list-button.is-playing .toggle-list-marker {
+			background: color-mix(in oklab, var(--color-accent-1) 20%, transparent);
+		}
+
+		.toggle-list-button.is-active .toggle-list-track,
+		.toggle-list-button.is-playing .toggle-list-track {
+			@apply text-white;
+		}
+	}
+
+	@media (width >= theme(--breakpoint-md)) {
+		.toggle-list-marker {
+			@apply min-h-10;
+		}
+
+		.toggle-list-track {
+			@apply min-h-10 px-3;
+		}
+	}
+
+	@media (width >= theme(--breakpoint-xl)) {
+		.toggle-list-marker {
+			@apply min-h-11;
+		}
+
+		.toggle-list-track {
+			@apply min-h-11;
+		}
+	}
+}
+
+/* Buiten @layer zodat dit altijd wint van utilities */
+.album-card-subtitle {
+	color: var(--color-accent-1);
+}
+
+@media (prefers-color-scheme: dark) {
+	.album-card-subtitle {
+		color: color-mix(in oklab, var(--color-accent-1) 25%, white);
+	}
+}

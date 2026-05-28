@@ -1,0 +1,74 @@
+{% set recipeData = recipe %}
+{% if recipeData %}
+
+{# Kookmodus toggle — alleen zichtbaar als Wake Lock ondersteund wordt (via JS) #}
+<div class="hidden items-center gap-2 mb-2" data-recipe-wakelock-row>
+	<span class="u-text-sm text-neutral-500 dark:text-neutral-400">Kookmodus</span>
+	<button
+		type="button"
+		role="switch"
+		aria-checked="false"
+		aria-label="Kookmodus"
+		data-recipe-wakelock
+		class="relative inline-flex h-5 w-9 shrink-0 rounded-full bg-neutral-400 dark:bg-neutral-700 transition-colors cursor-pointer"
+	>
+		<span class="inline-block my-auto ml-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform" data-recipe-wakelock-thumb></span>
+	</button>
+</div>
+
+<div class="not-flow mb-6 lg:mb-10 border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-stone-900 rounded-sm shadow-xl" data-recipe="{{ recipeData.serves }}">
+
+	{# Meta: personen + tijden #}
+	<div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 border-b border-neutral-200 dark:border-neutral-800">
+
+		<div class="flex items-center gap-x-4 gap-y-2 flex-wrap">
+
+		{% if recipeData.prep_time %}
+		<span class="u-text-sm text-neutral-500 dark:text-neutral-400">Bereiding: {{ recipeData.prep_time }}</span>
+		{% endif %}
+
+		{% if recipeData.cook_time %}
+		<span class="u-text-sm text-neutral-500 dark:text-neutral-400">Kooktijd: {{ recipeData.cook_time }}</span>
+		{% endif %}
+
+		</div>
+
+		<div class="flex items-center gap-2">
+			<span class="u-text-sm text-neutral-500 dark:text-neutral-400 hidden sm:inline">Personen:</span>
+			<div class="inline-flex items-stretch u-text-sm text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700 rounded-sm overflow-hidden select-none">
+				<button
+					type="button"
+					class="w-7 h-7 flex items-center justify-center leading-none border-r border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 cursor-pointer"
+					data-recipe-minus
+					aria-label="Minder personen"
+				>−</button>
+				<span class="px-2.5 flex items-center" data-recipe-serves>{{ recipeData.serves }}</span>
+				<button
+					type="button"
+					class="w-7 h-7 flex items-center justify-center leading-none border-l border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 cursor-pointer"
+					data-recipe-plus
+					aria-label="Meer personen"
+				>+</button>
+			</div>
+		</div>
+
+	</div>
+
+	{# Ingrediënten #}
+	{% if recipeData.ingredients and recipeData.ingredients.length %}
+	<ul class="divide-y divide-neutral-100 dark:divide-neutral-800">
+		{% for ing in recipeData.ingredients %}
+		<li class="flex justify-between items-baseline px-4 py-2 u-text-sm">
+			<span>{{ ing.name }}</span>
+			{% if ing.amount %}
+			<span class="text-neutral-600 dark:text-neutral-400 shrink-0 ml-4">
+				<span data-recipe-amount="{{ ing.amount }}">{{ ing.amount }}</span>{% if ing.unit %}&thinsp;{{ ing.unit }}{% endif %}
+			</span>
+			{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+
+</div>
+{% endif %}

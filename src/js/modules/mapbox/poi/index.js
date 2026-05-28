@@ -1,0 +1,1 @@
+export { initPoiMaps } from './lifecycle';

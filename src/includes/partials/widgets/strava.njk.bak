@@ -1,0 +1,49 @@
+{% set totalItems =4 %}
+{% set index = 1 %}
+{% for activity in strava.activities %}
+
+	{% if activity.type == "Run" or activity.type == "Ride" %}
+
+		{% if index <= totalItems %}
+		<div class="grid grid-cols-5 lg:grid-cols-8 grid-rows-auto w-full mt-large">
+				<div class="w-unit-5 h-unit-3 col-span-5 row-span-3">
+					{# {% set mapStyle = "dydric/cm3ep5pup006701qu7xhfhbxc" %} #}
+					{% set mapStyle = "mapbox/satellite-v9" %}
+					{% set token = "pk.eyJ1IjoiZHlkcmljIiwiYSI6ImY1ZjIwNTAwNmYxYzVlMzJmZTdjZGE1MzJhMzIwMzZhIn0.PQCzoNuDuKyxEYpsfMUd-A" %}
+					{% set mapboxUrl = "https://api.mapbox.com/styles/v1/" + mapStyle + "/static/path-8+ffffff(" + activity.map.summary_polyline | urlencode + ")/auto/750x450?access_token=" + token %}
+						<img src="{{ mapboxUrl }}" alt="Strava Map" eleventy:widths="750" class="w-full h-full object-cover rounded brightness-125 contrast-125 dark:brightness-100 dark:contrast-100" />
+				</div>
+
+				<div class="w-unit-5 col-span-5 lg:w-unit-3 lg:col-span-3 h-unit-2 row-span-2 lg:h-unit-3 lg:row-span-3">
+					<div class="flex lg:flex-col flex-wrap lg:flex-nowrap lg:items-start justify-between lg:justify-center rounded bg-white text-black dark:bg-neutral-800 dark:text-gray-200 w-full h-full p-4 px-large">
+						{% set hours = (activity.moving_time / 3600) | int %}
+						{% set minutes = ((activity.moving_time % 3600) / 60) | int %}
+						{% set seconds = (activity.moving_time % 60) | int %}
+						{% set average_speed_kmh = (activity.average_speed * 3.6) | round(2) %}
+						{% set distance_km = (activity.distance / 1000) | round(2) %}
+						{% set distance_title = (activity.distance / 1000) | round(0) %}
+
+						<div class="flex-initial w-1/2 lg:w-full py-1">
+							<h2 class="text-[#fc5200] text-lg font-extrabold tracking-tight whitespace-nowrap w-full">{{ distance_title }}K {{ activity.type }}</h2>
+						</div>
+
+						<div class="flex-initial w-1/2 lg:w-full py-1">
+							<span class="text-base font-semibold tracking-tight whitespace-nowrap truncate block opacity-50">time:</span>
+							<span class="text-base font-bold tracking-tight whitespace-nowrap w-full truncate block mb-1 md:mb-2">{% if hours > 0 %}{{ hours }}h{% endif %}{{ minutes }}m{{ seconds }}s</span>
+							<span class="text-base font-semibold tracking-tight whitespace-nowrap truncate block opacity-50">speed:</span>
+							<span class="text-base font-bold tracking-tight whitespace-nowrap w-full truncate block mb-1 md:mb-2">{{ average_speed_kmh }} km/h</span>
+							<span class="text-base font-semibold tracking-tight whitespace-nowrap truncate block opacity-50">distance:</span>
+							<span class="text-base font-bold tracking-tight whitespace-nowrap w-full truncate block">{{ distance_km }} km</span>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			{% set index = index + 1 %}
+		{% endif %}
+	{% endif %}
+{% endfor %}
+
+
+
+{# {"resource_state":2,"athlete":{"id":630194,"resource_state":1},"name":"Nike Run Club: dinsdag ochtendrun","distance":5281.6,"moving_time":1983,"elapsed_time":1988,"total_elevation_gain":1,"type":"Run","sport_type":"Run","workout_type":null,"id":12659702485,"start_date":"2024-10-15T09:50:04Z","start_date_local":"2024-10-15T11:50:04Z","timezone":"(GMT+01:00) Europe/Amsterdam","utc_offset":7200,"location_city":null,"location_state":null,"location_country":"Nederland","achievement_count":0,"kudos_count":0,"comment_count":0,"athlete_count":1,"photo_count":0,"map":{"id":"a12659702485","summary_polyline":"","resource_state":2},"trainer":false,"commute":false,"manual":false,"private":true,"visibility":"only_me","flagged":false,"gear_id":null,"start_latlng":[53.16851492039859,5.797079214826226],"end_latlng":[53.16989022307098,5.796413524076343],"average_speed":2.663,"max_speed":3.706,"average_cadence":78.6,"has_heartrate":true,"average_heartrate":161.3,"max_heartrate":175,"heartrate_opt_out":false,"display_hide_heartrate_option":true,"elev_high":5.6,"elev_low":-2.8,"upload_id":13497525643,"upload_id_str":"13497525643","external_id":"1d3ae2d6-5408-4ac9-abb4-291ac161bd4d.fit","from_accepted_tag":false,"pr_count":0,"total_photo_count":0,"has_kudoed":false} #}

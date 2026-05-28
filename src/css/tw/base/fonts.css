@@ -1,0 +1,32 @@
+@layer base {
+	@font-face {
+		font-display: swap;
+		font-family: 'PPNeueMontreal';
+		font-style: normal;
+		font-weight: 100 900;
+		src: url('../assets/fonts/PPNeueMontreal-Variable.woff2') format('woff2'),
+			url('../assets/fonts/PPNeueMontreal-Variable.woff') format('woff');
+	}
+
+	@font-face {
+		font-display: optional;
+		font-family: 'iAWriterMono';
+		font-weight: 100 900;
+		src: url('../assets/fonts/iAWriterMonoV.woff2') format('woff2');
+	}
+
+	/*
+	 * font-display: swap — tekst blijft altijd zichtbaar (FOUT), ook als het
+	 * font nog niet geladen is. Dit is de meest toegankelijke keuze: schermle-
+	 * zers en vergrotingssoftware zien nooit een lege plek.
+	 * De fallback-stack ("Segoe Script" → "Bradley Hand" → cursive) biedt een
+	 * visueel vergelijkbaar alternatief totdat PermanentMarker beschikbaar is.
+	 */
+	@font-face {
+		font-display: swap;
+		font-family: 'PermanentMarker';
+		font-style: normal;
+		font-weight: 400;
+		src: url('../assets/fonts/Permanent-marker.woff2') format('woff2');
+	}
+}

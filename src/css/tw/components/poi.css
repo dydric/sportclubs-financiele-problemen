@@ -1,0 +1,231 @@
+@layer components {
+	[data-mapbox-activity] {
+		--map-route-base: theme(colors.blue.600);
+		--map-route-slow: theme(colors.blue.400);
+		--map-route-medium: theme(colors.blue.500);
+		--map-route-fast: theme(colors.lime.400);
+	}
+
+	[data-mapbox-poi] {
+		--poi-marker-shadow: 0 8px 20px color-mix(in oklab, theme(colors.black) 20%, transparent);
+		@apply bg-page;
+	}
+
+
+	.poi-map {
+		@apply relative bg-page;
+	}
+
+	.poi-map-loader {
+		@apply absolute inset-0 z-20 pointer-events-none bg-page grid place-items-center;
+	}
+
+	.poi-map-loader-dots {
+		@apply inline-flex items-center gap-2;
+	}
+
+	.poi-map-loader-dot {
+		@apply block rounded-full size-2;
+		background: var(--color-accent-1);
+		animation: poi-loader-bounce 1s ease-in-out infinite;
+	}
+
+	.poi-map-loader-dot:nth-child(2) {
+		animation-delay: 0.12s;
+	}
+
+	.poi-map-loader-dot:nth-child(3) {
+		animation-delay: 0.24s;
+	}
+
+	[data-mapbox-poi] .mapboxgl-ctrl-reset-btn {
+		@apply grid place-items-center p-0;
+		line-height: 0;
+		color: theme(colors.neutral.800);
+		opacity: 1;
+	}
+
+	[data-mapbox-poi] .mapboxgl-ctrl-reset-icon {
+		@apply grid place-items-center;
+		width: 100%;
+		height: 100%;
+	}
+
+	[data-mapbox-poi] .mapboxgl-ctrl-reset-icon svg {
+		@apply block;
+		width: 0.95rem;
+		height: 0.95rem;
+		shape-rendering: geometricPrecision;
+	}
+
+	.poi-list {
+		@apply list-none ml-0 pl-0 flex flex-col border border-neutral-200 rounded-sm bg-white shadow-xl;
+
+		@media (width < theme(--breakpoint-sm)) {
+			margin-inline: calc(-1 * var(--container-px));
+			border-radius: 0;
+			border-left: none;
+			border-right: none;
+		}
+	}
+
+	.poi-list > :first-child {
+		@apply rounded-t-sm;
+	}
+
+	.poi-list > :last-child {
+		@apply rounded-b-sm;
+	}
+
+	.poi-list-item {
+		@apply m-0;
+	}
+
+	.poi-list-item + .poi-list-item,
+	.poi-list-group-title + .poi-list-item {
+		border-top: 1px solid theme(colors.neutral.100);
+	}
+
+	.poi-list-group-title {
+		@apply mt-0 first:mt-0 mb-0 px-4 py-2 text-left font-semibold text-current border-b border-neutral-100;
+	}
+
+	.poi-list-marker {
+		@apply px-1.5 shrink-0;
+	}
+
+	@media (width >= theme(--breakpoint-md)) {
+		.poi-list-marker {
+			@apply px-3;
+		}
+	}
+
+	.poi-list-marker-circle {
+		@apply rounded-full bg-accent-1 size-7 flex items-center justify-center shrink-0;
+	}
+
+	.poi-list-marker-icon {
+		@apply block;
+		width: 0.75rem;
+		aspect-ratio: 1 / 1;
+		background: white;
+		mask-image: var(--poi-icon);
+		mask-repeat: no-repeat;
+		mask-position: center;
+		mask-size: contain;
+		-webkit-mask-image: var(--poi-icon);
+		-webkit-mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		-webkit-mask-size: contain;
+	}
+
+	.poi-list-chevron {
+		@apply block size-3.5 text-neutral-400 shrink-0;
+		transition: transform 0.2s ease;
+	}
+
+	.poi-list-chevron svg {
+		@apply w-full h-full block;
+	}
+
+	.toggle-list-button.is-active .poi-list-chevron {
+		transform: rotate(180deg);
+	}
+
+	.poi-list-panel {
+		@apply mt-0 ml-0 w-full px-4 py-3 border-t border-neutral-100 bg-white text-sm shadow-xl relative z-20;
+	}
+
+	.poi-list-address,
+	.poi-list-description {
+		@apply m-0 font-medium opacity-[0.85];
+	}
+
+	.poi-list-address {
+		@apply text-xs;
+	}
+
+	.poi-list-description {
+		@apply mb-1.5;
+	}
+
+	.poi-list-link {
+		@apply inline-block mt-2 underline text-xs font-semibold underline-offset-2;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		[data-mapbox-activity] {
+			--map-route-base: theme(colors.blue.600);
+			--map-route-slow: theme(colors.red.400);
+			--map-route-medium: theme(colors.purple.300);
+			--map-route-fast: theme(colors.green.500);
+		}
+
+		.poi-list {
+			border-color: theme(colors.neutral.800);
+			background: theme(colors.stone.900);
+		}
+
+		.poi-list-item + .poi-list-item,
+		.poi-list-group-title + .poi-list-item {
+			border-top-color: theme(colors.neutral.800);
+		}
+
+		.poi-list-group-title {
+			border-bottom-color: theme(colors.neutral.800);
+		}
+
+		.poi-list-chevron {
+			@apply text-neutral-600;
+		}
+
+		.poi-list-panel {
+			border-top-color: theme(colors.neutral.800);
+			background: theme(colors.stone.900);
+			@apply text-white;
+		}
+
+		.poi-map-loader-dot {
+			background: var(--color-accent-1);
+		}
+	}
+
+}
+
+/* Unlayered: override Mapbox's default control offsets so the logo,
+   attribution and zoom/reset buttons sit nicely inset from the edges
+   independent of the (transparent) footer/header. */
+:root {
+	--map-ctrl-edge-pad: 0px;
+}
+
+@media (min-width: 1024px) {
+	:root {
+		--map-ctrl-edge-pad: 0.25rem;
+	}
+}
+
+[data-mapbox-poi] .mapboxgl-ctrl-bottom-right,
+[data-mapbox-activity] .mapboxgl-ctrl-bottom-right,
+[data-mapbox-poi] .mapboxgl-ctrl-bottom-left,
+[data-mapbox-activity] .mapboxgl-ctrl-bottom-left {
+	bottom: var(--map-ctrl-edge-pad);
+}
+
+[data-mapbox-poi] .mapboxgl-ctrl-top-right,
+[data-mapbox-activity] .mapboxgl-ctrl-top-right,
+[data-mapbox-poi] .mapboxgl-ctrl-top-left,
+[data-mapbox-activity] .mapboxgl-ctrl-top-left {
+	top: var(--map-ctrl-edge-pad);
+}
+
+@keyframes poi-loader-bounce {
+	0%, 80%, 100% {
+		opacity: 0.35;
+		transform: translateY(0);
+	}
+	40% {
+		opacity: 1;
+		transform: translateY(-0.28rem);
+	}
+}

@@ -1,0 +1,22 @@
+@layer components {
+	.custom-header {
+		min-height: var(--header-height);
+		padding-left: var(--outer-px);
+		padding-right: calc(var(--outer-px) + var(--scrollbar, 0px));
+		pointer-events: none;
+	}
+
+	.custom-header > * {
+		pointer-events: none;
+	}
+
+	.custom-header a,
+	.custom-header button,
+	.custom-header [data-js] {
+		pointer-events: auto;
+	}
+
+	.custom-header .u-button {
+		height: var(--dock-item-h);
+	}
+}

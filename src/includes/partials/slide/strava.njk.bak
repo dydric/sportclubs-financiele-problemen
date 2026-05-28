@@ -1,0 +1,65 @@
+{% set totalItems = 1 %}
+{% set index = 1 %}
+{% for activity in strava.activities %}
+
+	{% if activity.type == "Run" or activity.type == "Ride" or activity.type == "AlpineSki" %}
+
+		{% if index <= totalItems %}
+
+			{% set hours = (activity.moving_time / 3600) | int %}
+			{% set minutes = ((activity.moving_time % 3600) / 60) | int %}
+			{% set seconds = (activity.moving_time % 60) | int %}
+			{% set average_speed_kmh = (activity.average_speed * 3.6) | round(2) %}
+			{% set distance_km = (activity.distance / 1000) | round(2) %}
+			{% set distance_title = (activity.distance / 1000) | round(0) %}
+
+			<div class="swiper-slide swiper-slide--strava rounded w-unit-4 h-unit-4 overflow-hidden relative" data-daysago="{{ activity.start_date | daysAgo }}">
+
+				<div class="absolute left-large top-large w-unit-1/2 h-unit-1/2 bg-[#fc5200] rounded-sm text-white">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 272 400" class="w-full h-full scale-[66%]"><path fill="currentcolor" d="M0 232 112 0l112 232h-72l-40-96-40 96H0Z"/><path fill="currentcolor" fill-opacity=".5" d="m160 232 32 72 32-72h48l-80 168-80-168h48Z"/></svg>
+				</div>
+
+				<div class="h-full w-full flex rounded  flex-col justify-stretch gap-0 text-base font-semibold tracking-tight">
+
+					<div class="flex-auto h-unit-3 rounded-b-sm overflow-hidden">
+
+						{% if activity.type == "AlpineSki" %}
+							{% set mapStyle = "mapbox/light-v10" %}
+						{% else %}
+							{% set mapStyle = "mapbox/outdoors-v12" %}
+						{% endif %}
+
+						{% set token = "pk.eyJ1IjoiZHlkcmljIiwiYSI6ImY1ZjIwNTAwNmYxYzVlMzJmZTdjZGE1MzJhMzIwMzZhIn0.PQCzoNuDuKyxEYpsfMUd-A" %}
+						{% set mapboxUrl = "https://api.mapbox.com/styles/v1/" + mapStyle + "/static/path-8+fc5200(" + activity.map.summary_polyline | urlencode + ")/auto/600x450?access_token=" + token %}
+							<img src="{{ mapboxUrl }}" alt="Strava Map" eleventy:widths="600" class="w-full h-full object-cover" />
+					</div>
+					<div class="flex-initial w-full h-unit bg-gradient-to-br from-[#fc5200] to-red-500 rounded-t-sm p-large pt-0 flex gap-4 items-end text-white">
+						<div class="flex-auto">
+							<span class=" text-lg font-extrabold tracking-tight whitespace-nowrap w-full leading-none">
+								{{ distance_title }}K
+								{% if activity.type == "Run" or activity.type == "Ride" %}{{ activity.type }}{% else %}Ski{% endif %}
+								</span>
+						</div>
+						<div class="flex-initial">
+							<span class="text-sm font-semibold tracking-tight whitespace-nowrap truncate block opacity-75">time:</span>
+							<span class="text-sm font-bold tracking-tight whitespace-nowrap w-full truncate block">{% if hours > 0 %}{{ hours }}h{% endif %}{{ minutes }}m{{ seconds }}s</span>
+						</div>
+						<div class="flex-initial">
+							<span class="text-sm font-semibold tracking-tight whitespace-nowrap truncate block opacity-75">speed:</span>
+							<span class="text-sm font-bold tracking-tight whitespace-nowrap w-full truncate block">{{ average_speed_kmh }} km/h</span>
+						</div>
+						{# <div class="flex-initial">
+							<span class="text-base font-semibold tracking-tight whitespace-nowrap truncate block opacity-50">distance:</span>
+							<span class="text-base font-bold tracking-tight whitespace-nowrap w-full truncate block">{{ distance_km }} km</span>
+						</div> #}
+					</div>
+
+				</div>
+			</div>
+
+			{% set index = index + 1 %}
+		{% endif %}
+	{% endif %}
+{% endfor %}
+
+

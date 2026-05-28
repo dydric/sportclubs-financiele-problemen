@@ -1,0 +1,42 @@
+@layer utilities {
+
+	.u-text-3xl {
+		@apply text-3xl font-black leading-[1.1] lg:tracking-tight;
+	}
+
+	.u-text-2xl {
+		@apply text-2xl font-extrabold leading-[1.2];
+	}
+
+	.u-text-xl{
+		@apply text-xl font-bold leading-tight;
+	}
+
+	.u-text-lg {
+		@apply text-lg font-bold leading-tight;
+	}
+
+	.u-text-md {
+		@apply text-md font-medium leading-[1.35];
+	}
+
+	.u-text-base {
+		@apply text-base font-medium leading-[1.35];
+	}
+
+	.u-text-sm {
+		@apply text-sm font-semibold leading-[1.35];
+	}
+
+	.u-text-xs {
+		@apply text-xs font-semibold leading-[1.35];
+	}
+
+	.u-text-xl a {
+		@apply lg:decoration-3 lg:underline-offset-4;
+	}
+
+	.u-text-2xl a {
+		@apply lg:decoration-4 lg:underline-offset-5;
+	}
+}

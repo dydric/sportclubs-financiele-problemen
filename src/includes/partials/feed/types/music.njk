@@ -1,0 +1,219 @@
+{% set musicData = music or (page and page.data and page.data.music) %}
+{% set musicItems = musicData.items if musicData and musicData.items and musicData.items.length else (musicData if musicData and musicData.length else []) %}
+{% set musicCards = (page and page.data and page.data.musicCards) or musicCards or [] %}
+{% set cards = musicCards if musicCards and musicCards.length else musicItems %}
+
+{% if cards.length %}
+	{% for card in cards %}
+		{% set item = card.item if card.item else card %}
+		{% set albumData = card.albumData if card.albumData else null %}
+		{% if albumData %}
+			{% set isPlaylist = albumData.type == "playlist" %}
+			{% set hasCover = albumData.cover %}
+			{% set coverAlt = "Playlist cover " + albumData.title if isPlaylist else "Album cover " + albumData.title %}
+			{% set titleClasses = "u-text-xl text-neutral-800 dark:text-white block" %}
+			{% set titleClasses = titleClasses + " uppercase truncate" if not isPlaylist else titleClasses %}
+			{% set trackTextClasses = "u-text-md" %}
+
+			<div class="my-8 lg:mt-12 w-full {% if hasCover %}md:flex md:flex-row md:items-start md:gap-4{% endif %}" data-album-card>
+
+				{# Grote cover — alleen desktop #}
+				{% if hasCover %}
+					<div class="hidden md:block md:w-56 md:h-auto md:max-w-56 md:flex-none lg:w-64 lg:max-w-64 xl:w-100 xl:max-w-100 md:sticky md:top-4 md:transform-gpu md:will-change-transform self-start overflow-hidden rounded-sm">
+						<figure class="aspect-square w-full overflow-hidden">
+							<img
+								src="{{ albumData.cover }}"
+								alt="{{ coverAlt }}"
+								class="w-full h-full object-cover"
+								eleventy:widths="224,256,400,800"
+								sizes="(min-width: 1280px) 400px, (min-width: 1024px) 256px, 224px"
+								{% if loop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+								decoding="async"
+							>
+						</figure>
+					</div>
+				{% endif %}
+
+				{# Unified card: header + tracks #}
+				<div class="{% if hasCover %}md:flex-1 md:min-w-0{% endif %} flex flex-col gap-4">
+				<div class="flex flex-col border border-neutral-200 dark:border-neutral-800 rounded-sm overflow-hidden bg-white dark:bg-stone-900 shadow-xl">
+
+					{# Header: kleine cover op mobiel + titel + artiest #}
+					<div class="flex items-center gap-3.5 pl-1.5 md:px-4 pr-4 py-1.5 md:py-3 border-b border-neutral-100 dark:border-neutral-800">
+						{% if hasCover %}
+							<div class="md:hidden w-16 h-16 flex-none overflow-hidden rounded-sm bg-neutral-100 dark:bg-neutral-800">
+								<img
+									src="{{ albumData.cover }}"
+									alt="{{ coverAlt }}"
+									class="w-full h-full object-cover"
+									eleventy:widths="64,128"
+									sizes="64px"
+									{% if loop.first %}loading="eager"{% else %}loading="lazy"{% endif %}
+									decoding="async"
+								>
+							</div>
+						{% endif %}
+						<div class="flex-1 min-w-0">
+							<span class="{{ titleClasses }}">{{ albumData.title }}</span>
+							<span class="u-text-base font-bold! album-card-subtitle block">{{ albumData.subtitle }}</span>
+						</div>
+					</div>
+
+					{# Tracks #}
+					{% if albumData.tracks and albumData.tracks.length %}
+						<div class="flex flex-col divide-y divide-neutral-100 dark:divide-neutral-800">
+							{% for track in albumData.tracks %}
+								{% set isFav = item.favs and ((track.trackNumber in item.favs) or (track.trackName in item.favs)) %}
+								{% set hasPreview = track.previewUrl %}
+								{% set showTrackArtist = track.artistName and (isPlaylist or track.artistDiffers) %}
+								{% set favIndicatorClass = "block" if isFav else "hidden" %}
+								{% set favIndicatorClass = favIndicatorClass + " group-[.is-loading]:block" if hasPreview and not isFav else favIndicatorClass %}
+
+								{% set trackContent %}
+									<span class="toggle-list-track">
+										<span class="toggle-list-heading">
+											{% if track.trackNumber %}
+												<span class="opacity-50">{{ track.trackNumber }}.</span>
+											{% endif %}
+											<span>{{ track.trackName }}</span>
+											{% if showTrackArtist %}
+												<span class="toggle-list-subheading">{{ track.artistName }}</span>
+											{% endif %}
+										</span>
+										<span class="{{ favIndicatorClass }} toggle-list-favorite md:size-4" aria-hidden="true">
+											{% if isFav %}
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="{% if hasPreview %}w-full h-full block group-[.is-loading]:hidden{% else %}w-full h-full{% endif %}"><path fill="currentColor" d="M0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84.02L256 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 .0003 232.4 .0003 190.9L0 190.9z"/></svg>
+											{% endif %}
+											{% if hasPreview %}
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="w-full h-full hidden group-[.is-loading]:block animate-spin"><path fill="currentColor" d="M320 96C320 113.7 305.7 128 288 128C270.3 128 256 113.7 256 96V32C256 14.33 270.3 0 288 0C305.7 0 320 14.33 320 32V96zM320 480C320 497.7 305.7 512 288 512C270.3 512 256 497.7 256 480V416C256 398.3 270.3 384 288 384C305.7 384 320 398.3 320 416V480zM32 256C32 238.3 46.33 224 64 224H128C145.7 224 160 238.3 160 256C160 273.7 145.7 288 128 288H64C46.33 288 32 273.7 32 256zM512 224C529.7 224 544 238.3 544 256C544 273.7 529.7 288 512 288H448C430.3 288 416 273.7 416 256C416 238.3 430.3 224 448 224H512zM106.1 74.98C119.5 62.49 139.7 62.49 152.2 74.98L197.5 120.2C209.1 132.7 209.1 152.1 197.5 165.5C184.1 177.1 164.7 177.1 152.2 165.5L106.1 120.2C94.48 107.7 94.48 87.48 106.1 74.98zM469 391.8C481.5 404.3 481.5 424.5 469 437C456.5 449.5 436.3 449.5 423.8 437L378.5 391.8C366 379.3 366 359 378.5 346.5C391 334 411.3 334 423.8 346.5L469 391.8zM106.1 437C94.48 424.5 94.48 404.3 106.1 391.8L152.2 346.5C164.7 334 184.1 334 197.5 346.5C209.1 359 209.1 379.3 197.5 391.8L152.2 437C139.7 449.5 119.5 449.5 106.1 437zM423.8 74.98C436.3 62.48 456.5 62.48 469 74.98C481.5 87.47 481.5 107.7 469 120.2L423.8 165.5C411.3 177.1 391 177.1 378.5 165.5C366 152.1 366 132.7 378.5 120.2L423.8 74.98z"/></svg>
+											{% endif %}
+										</span>
+									</span>
+								{% endset %}
+
+								{% if hasPreview %}
+									<button
+										type="button"
+										class="toggle-list-button group {{ trackTextClasses }} text-left cursor-pointer appearance-none focus-visible:relative focus-visible:z-10 {% if isFav %}is-favorite{% endif %}"
+										data-track-preview-btn
+										data-track-preview="{{ track.previewUrl | escape }}"
+										aria-label="Speel preview van {{ track.trackName }}"
+										aria-pressed="false"
+										aria-busy="false"
+									>
+										<span class="toggle-list-marker px-1.5 md:px-2.5">
+											<span class="rounded-full bg-accent-1 text-white size-7 flex items-center justify-center p-2 shrink-0">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-full h-full block group-[.is-playing]:hidden" data-icon-play aria-hidden="true"><path fill="currentColor" d="M361 215C375.3 223.8 384 239.3 384 256C384 272.7 375.3 288.2 361 296.1L73.03 472.1C58.21 482 39.66 482.4 24.52 473.9C9.377 465.4 0 449.4 0 432V80C0 62.64 9.377 46.63 24.52 38.13C39.66 29.64 58.21 29.99 73.03 39.04L361 215z"/></svg>
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-full h-full hidden group-[.is-playing]:block" data-icon-stop aria-hidden="true"><path fill="currentColor" d="M384 128v255.1c0 35.35-28.65 64-64 64H64c-35.35 0-64-28.65-64-64V128c0-35.35 28.65-64 64-64H320C355.3 64 384 92.65 384 128z"/></svg>
+											</span>
+										</span>
+										{{ trackContent | safe }}
+									</button>
+								{% else %}
+									<div class="toggle-list-button group {{ trackTextClasses }} text-left {% if isFav %}is-favorite{% endif %}">
+										<span class="toggle-list-marker px-1.5 md:px-2.5">
+											<span class="rounded-full bg-accent-1 text-white opacity-50 size-7 flex items-center justify-center p-2 shrink-0">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-full h-full"><path fill="currentColor" d="M361 215C375.3 223.8 384 239.3 384 256C384 272.7 375.3 288.2 361 296.1L73.03 472.1C58.21 482 39.66 482.4 24.52 473.9C9.377 465.4 0 449.4 0 432V80C0 62.64 9.377 46.63 24.52 38.13C39.66 29.64 58.21 29.99 73.03 39.04L361 215z"/></svg>
+											</span>
+										</span>
+										{{ trackContent | safe }}
+									</div>
+								{% endif %}
+
+								{% if track.note %}
+									<p class="u-text-sm px-4 py-2 border-t border-neutral-100 dark:border-neutral-800">{{ track.note }}</p>
+								{% endif %}
+							{% endfor %}
+						</div>
+					{% endif %}
+
+				</div>
+
+				{# Footer: links #}
+				{% if albumData.appleUrl or albumData.spotifyUrl %}
+					<div class="flex justify-end gap-3">
+						{% if albumData.appleUrl %}
+							<a href="{{ albumData.appleUrl }}" target="_blank" rel="noopener noreferrer" class="u-text-sm">Apple Music</a>
+						{% endif %}
+						{% if albumData.spotifyUrl %}
+							<a href="{{ albumData.spotifyUrl }}" target="_blank" rel="noopener noreferrer" class="u-text-sm">Spotify</a>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				</div>
+
+			</div>
+		{% endif %}
+		{% endfor %}
+
+	<script>
+		(() => {
+			const roots = document.querySelectorAll('[data-album-card]');
+			if (!roots.length) return;
+			const MIN_LOADING_MS = 1200;
+
+			roots.forEach((root) => {
+				if (root.dataset.previewInitialized === 'true') return;
+				root.dataset.previewInitialized = 'true';
+
+				const buttons = root.querySelectorAll('button[data-track-preview-btn]');
+				if (!buttons.length) return;
+
+				const audio = new Audio();
+				let activeButton = null;
+				let playRequestId = 0;
+
+				const stopPlayback = () => {
+					audio.pause();
+					audio.currentTime = 0;
+					if (!activeButton) return;
+
+					activeButton.classList.remove('is-loading');
+					activeButton.classList.remove('is-playing');
+					activeButton.setAttribute('aria-busy', 'false');
+					activeButton.setAttribute('aria-pressed', 'false');
+					activeButton = null;
+				};
+
+				audio.addEventListener('ended', stopPlayback);
+
+				buttons.forEach((button) => {
+					const preview = button.getAttribute('data-track-preview');
+					if (!preview) return;
+
+					button.addEventListener('click', () => {
+						playRequestId += 1;
+						const requestId = playRequestId;
+
+						if (activeButton === button && (!audio.paused || button.classList.contains('is-loading'))) {
+							stopPlayback();
+							return;
+						}
+
+						stopPlayback();
+						const loadingStartedAt = Date.now();
+						button.classList.add('is-loading');
+						button.setAttribute('aria-busy', 'true');
+						activeButton = button;
+						audio.src = preview;
+
+						audio.play().then(() => {
+							const elapsed = Date.now() - loadingStartedAt;
+							const waitFor = Math.max(0, MIN_LOADING_MS - elapsed);
+							setTimeout(() => {
+								if (requestId !== playRequestId || activeButton !== button) return;
+								button.classList.remove('is-loading');
+								button.classList.add('is-playing');
+								button.setAttribute('aria-busy', 'false');
+								button.setAttribute('aria-pressed', 'true');
+							}, waitFor);
+						}).catch(() => {
+							stopPlayback();
+						});
+					});
+				});
+			});
+		})();
+	</script>
+{% endif %}

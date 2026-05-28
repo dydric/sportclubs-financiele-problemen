@@ -1,0 +1,24 @@
+---
+layout: default
+hidepageforseo: true
+pagination:
+  data: collections.feedCategories
+  size: 1
+  alias: categoryPage
+permalink: "/archief/{{ categoryPage.slug }}/"
+eleventyComputed:
+  title: "Categorie: {{ categoryPage.name }}"
+  feedUrl: "/rss/{{ categoryPage.slug }}.xml"
+  feedTitle: "Feed categorie: {{ categoryPage.name }}"
+  footerActiveCategorySlug: "{{ categoryPage.slug }}"
+footerLinkUrl: "/"
+footerLinkLabel: "Terug naar archief"
+footerShowCategoryPicker: true
+---
+{% from "components/feed-list.njk" import feedList %}
+
+<div class="container xl:py-6 mb-8">
+  <h1 class="u-text-2xl">Archief/{{ categoryPage.name }}</h1>
+</div>
+
+{{ feedList(categoryPage.items) }}

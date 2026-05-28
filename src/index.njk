@@ -1,0 +1,25 @@
+---
+title: Hey! Ik ben Diederik
+layout: default
+permalink: /
+feedUrl: /archief/
+feedRSS: /rss/index.xml
+---
+{% from "components/rss-link.njk" import rssLink %}
+{% from "components/feed-list.njk" import feedList %}
+
+<div class="container xl:py-6 mb-8 xl:mb-12">
+  <div class="u-text-xl leading-[1.1] lg:tracking-tight max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
+    {{ site.description | safe }}
+  </div>
+</div><!--container-->
+
+{{ feedList(collections.feed.slice(0, 5)) }}
+
+<div class="container mt-6 xl:mt-8">
+  <div class="u-text-base inline-flex items-center gap-2 mb-8 xl:mb-12">
+    <a href="{{ feedUrl }}" class="u-button">Archief</a>
+    {# {{ rssLink(feedRSS) }} #}
+  </div>
+</div>
+

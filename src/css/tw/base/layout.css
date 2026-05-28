@@ -1,0 +1,76 @@
+@layer base {
+	.container {
+		width: 100% !important;
+		max-width: 1520px !important;
+		padding-left: var(--container-px);
+		padding-right: var(--container-px);
+	}
+
+	:root {
+		--main-noise-opacity: 0.02;
+		--main-noise-image-a: url("/assets/noise/noise-a.svg");
+		--main-noise-image-b: url("/assets/noise/noise-b.svg");
+	}
+
+	.main-noise-layer {
+		display: none;
+	}
+
+	.page-fade {
+		position: fixed;
+		left: 0;
+		right: var(--scrollbar, 0px);
+		z-index: 45;
+		pointer-events: none;
+		will-change: transform;
+	}
+
+	.page-fade--top {
+		top: 0;
+		height: var(--header-height);
+		background: linear-gradient(to bottom, var(--page-bg) 0%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+		mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+	}
+
+	@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+		.page-fade--top {
+			backdrop-filter: blur(4px);
+		}
+	}
+
+	.page-fade--bottom {
+		bottom: 0;
+		height: calc(var(--footer-height, 74px) + 4rem);
+		background: linear-gradient(to top, var(--page-bg) 0%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to top, black 20%, transparent 100%);
+		mask-image: linear-gradient(to top, black 20%, transparent 100%);
+		pointer-events: none;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.main-noise-layer {
+			display: block;
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 40;
+			pointer-events: none;
+			will-change: transform;
+			background-image: var(--main-noise-image-a), var(--main-noise-image-b);
+			background-repeat: repeat, repeat;
+			background-size: auto, auto;
+			background-position: 0 0, 19px 31px;
+			opacity: var(--main-noise-opacity);
+		}
+
+		@media (prefers-color-scheme: dark) {
+			.main-noise-layer {
+				filter: invert(1);
+				/* opacity: 0.02; */
+			}
+		}
+	}
+}

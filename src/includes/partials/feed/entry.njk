@@ -1,0 +1,80 @@
+{% set musicData = item.data.music %}
+{% set musicItems = [] %}
+{% if musicData %}
+  {% if musicData.items and musicData.items.length %}
+    {% set musicItems = musicData.items %}
+  {% elif musicData.length %}
+    {% set musicItems = musicData %}
+  {% endif %}
+{% endif %}
+{% set appleUrl = "" %}
+{% set spotifyUrl = "" %}
+{% for musicItem in musicItems %}
+  {% if not appleUrl and musicItem.apple %}
+    {% set appleUrl = musicItem.apple %}
+  {% endif %}
+  {% if not spotifyUrl and musicItem.spotify %}
+    {% set spotifyUrl = musicItem.spotify %}
+  {% endif %}
+{% endfor %}
+{% set musicLinksHtml %}
+  {% if item.data.type == "music" and (appleUrl or spotifyUrl) %}
+<p>Luisteren:
+    {% if appleUrl %}<a href="{{ appleUrl | escape }}">Apple Music</a>{% endif %}
+    {% if appleUrl and spotifyUrl %} • {% endif %}
+    {% if spotifyUrl %}<a href="{{ spotifyUrl | escape }}">Spotify</a>{% endif %}
+</p>
+  {% endif %}
+{% endset %}
+{% set activityMetaHtml %}
+  {% if item.data.type == "activity" and item.data.strava and stravaActivities and stravaActivities.byId %}
+    {% set activityData = stravaActivities.byId[item.data.strava|string] %}
+    {% if activityData and activityData.distance and activityData.moving_time %}
+      {% set distanceKm = (activityData.distance / 1000) | round(2) %}
+      {% set totalSeconds = activityData.moving_time | int %}
+      {% set hours = (totalSeconds / 3600) | int %}
+      {% set minutes = ((totalSeconds % 3600) / 60) | int %}
+      {% set seconds = (totalSeconds % 60) | int %}
+      {% set mm = ('0' + (minutes | string)) if minutes < 10 else (minutes | string) %}
+      {% set ss = ('0' + (seconds | string)) if seconds < 10 else (seconds | string) %}
+      <p><strong>{{ distanceKm }}km - {% if hours > 0 %}{{ hours }}:{{ mm }}:{{ ss }}{% else %}{{ mm }}:{{ ss }}{% endif %}</strong></p>
+    {% endif %}
+  {% endif %}
+{% endset %}
+{% set recipeMetaHtml %}
+  {% if item.data.type == "recipe" and item.data.recipe %}
+    {% set r = item.data.recipe %}
+    {% if r.ingredients and r.ingredients.length %}
+    <h3>Ingredi&euml;nten</h3>
+    <ul>
+      {% for ing in r.ingredients %}
+      <li>{% if ing.amount %}{{ ing.amount }}{% if ing.unit %}&thinsp;{{ ing.unit }}{% endif %} {% endif %}{{ ing.name }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <p><strong>Personen:</strong> {{ r.serves }}{% if r.prep_time %} &bull; <strong>Bereiding:</strong> {{ r.prep_time }}{% endif %}{% if r.cook_time %} &bull; <strong>Kooktijd:</strong> {{ r.cook_time }}{% endif %}</p>
+  {% endif %}
+{% endset %}
+{% set heroImageHtml %}
+  {% if item.data.image %}
+    {% set heroSrc = item.data.image if item.data.image.startsWith("http") else "/media/" + item.data.image %}
+<img src="{{ heroSrc }}" alt="{{ item.data.imageAlt or item.data.title | escape }}">
+  {% endif %}
+{% endset %}
+{% set entryContent = heroImageHtml + item.templateContent %}
+{% if item.data.type == "activity" %}
+  {% set entryContent = heroImageHtml + activityMetaHtml + item.templateContent %}
+{% endif %}
+{% if item.data.type == "music" %}
+  {% set entryContent = item.templateContent + musicLinksHtml %}
+{% endif %}
+{% if item.data.type == "recipe" %}
+  {% set entryContent = item.templateContent + recipeMetaHtml %}
+{% endif %}
+  <entry>
+    <title>{{ item.data.title | escape }}</title>
+    <link href="{{ site.url }}{{ item.url }}" />
+    <updated>{{ item.date | dateToRfc3339 }}</updated>
+    <id>{{ site.url }}{{ item.url }}</id>
+    <content type="html">{{ entryContent | absoluteImageUrls(site.url) | escape }}</content>
+  </entry>

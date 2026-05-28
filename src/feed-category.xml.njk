@@ -1,0 +1,22 @@
+---
+pagination:
+  data: collections.feedCategoriesRss
+  size: 1
+  alias: categoryPage
+permalink: "/rss/{{ categoryPage.slug }}.xml"
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.lang }}">
+  <title>{{ site.name | escape }} - {{ categoryPage.name | escape }}</title>
+  <link href="{{ site.url }}/rss/{{ categoryPage.slug }}.xml" rel="self" />
+  <link href="{{ site.url }}/archief/{{ categoryPage.slug }}/" />
+  <updated>{{ categoryPage.updated | dateToRfc3339 }}</updated>
+  <id>{{ site.url }}/archief/{{ categoryPage.slug }}/</id>
+  <author>
+    <name>{{ site.author.name | escape }}</name>
+  </author>
+  {% for item in categoryPage.feedItems %}
+  {% include "feed/entry.njk" %}
+  {% endfor %}
+</feed>

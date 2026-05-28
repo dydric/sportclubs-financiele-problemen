@@ -1,0 +1,48 @@
+# Eleventy
+_site
+src/media/processed
+src/css/tw/tw.build.css
+
+# Log and debug files
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.npm
+
+node_modules
+*.local
+package-lock.json
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Dotenv
+.env
+
+# Mac
+.DS_Store
+
+# Netlify folder
+.netlify
+deno.lock
+
+# Netlify cache
+.cache
+
+# Claude Code
+.claude/worktrees
+
+# Optional eslint cache
+.eslintcache

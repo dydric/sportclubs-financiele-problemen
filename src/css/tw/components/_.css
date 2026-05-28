@@ -1,0 +1,46 @@
+@import "./header.css";
+@import "./dock.css";
+@import "./scrollbar.css";
+@import "./toggle-list-button.css";
+@import "./poi.css";
+@import "./likes.css";
+@import "./gallery.css";
+@import "./embed.css";
+@import "./button.css";
+@import "./dock-category-picker.css";
+
+
+@layer components {
+
+	.feed-hero img {
+		display: block;
+		border-radius: var(--radius-sm);
+	}
+
+	.logo-link {
+		transition:
+			transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			box-shadow 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			filter 160ms ease;
+	}
+
+	.logo-link:hover {
+		filter: brightness(1.1);
+		transform: translateY(-1px);
+		box-shadow:
+			0 1px 2px 0 rgba(0, 0, 0, 0.22),
+			0 3px 5px -1px rgba(0, 0, 0, 0.18),
+			0 9px 16px -3px rgba(29, 78, 216, 0.32),
+			0 20px 30px -8px rgba(29, 78, 216, 0.24);
+	}
+
+	.logo-link:active {
+		filter: brightness(0.95);
+		transform: translateY(2px) scale(0.99);
+		transition-duration: 60ms, 80ms, 60ms;
+		box-shadow:
+			0 1px 1px 0 rgba(0, 0, 0, 0.1),
+			0 2px 2px 0 rgba(29, 78, 216, 0.08);
+	}
+
+}

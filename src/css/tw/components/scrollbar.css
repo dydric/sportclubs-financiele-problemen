@@ -1,0 +1,23 @@
+@layer base {
+
+	.scroll-container::-webkit-scrollbar {
+		width: var(--sb-size);
+	}
+
+	.scroll-container::-webkit-scrollbar-track {
+		background: var(--sb-track-color);
+		border-radius: 0px;
+		border-left: 1px solid var(--border);
+	}
+
+	.scroll-container::-webkit-scrollbar-thumb {
+		background: var(--sb-thumb-color);
+		border-radius: 0px;
+	}
+
+	@supports not selector(::-webkit-scrollbar) {
+		.scroll-container {
+			scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+		}
+	}
+}

@@ -1,0 +1,240 @@
+@layer base {
+
+	/* Base link style */
+	a {
+		@apply underline decoration-2 underline-offset-3;
+		@apply decoration-neutral-300 dark:decoration-stone-500 ;
+	}
+
+	img.emoji {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		margin: 0 .05em 0 .1em;
+		vertical-align: -.1em;
+	}
+
+	a:hover,
+	a:focus {
+		@apply decoration-link-hover;
+	}
+
+	/* Flow */
+	.flow > * + * {
+		margin-top: var(--flow, 1rem);
+	}
+
+	/* Markdown content */
+	.content {
+		@apply text-base font-sans font-normal;
+		font-synthesis: none;
+		font-optical-sizing: auto;
+
+		> h1 {
+			@apply text-xl font-extrabold leading-[1.1];
+		}
+
+		> h2 {
+			@apply text-lg font-bold leading-tight;
+		}
+
+		> h3 {
+			@apply text-base font-semibold leading-tight;
+		}
+
+		> ol {
+			@apply list-decimal ml-[1.75ch];
+		}
+
+		> ul {
+			@apply list-disc ml-[1.75ch];
+		}
+
+		a {
+			@apply font-semibold;
+		}
+
+		/* Allow faux italic for body copy when italic face is unavailable */
+		:is(em, i) {
+			font-style: italic;
+			font-synthesis: style;
+		}
+
+		> blockquote {
+			@apply text-xl font-bold leading-[1.1];
+			@apply bg-black text-white ;
+			--_pad: calc(var(--flow) * 1.5);
+			position: relative;
+			overflow: hidden;
+			border-radius: var(--radius-sm);
+			padding: 1rem;
+			margin-block: var(--_pad);
+			background-image:
+				url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 24"><path d="M0 12.416C0 8.27733 0.832 5.20533 2.496 3.2C4.16 1.152 6.912 0.0853348 10.752 0V5.504C9.216 5.67467 8.14933 6.18667 7.552 7.04C6.95467 7.89333 6.656 9.17333 6.656 10.88V11.648H10.752V23.936H0V12.416ZM14.656 12.416C14.656 8.27733 15.488 5.20533 17.152 3.2C18.816 1.152 21.568 0.0853348 25.408 0V5.504C23.872 5.67467 22.8053 6.18667 22.208 7.04C21.6107 7.89333 21.312 9.17333 21.312 10.88V11.648H25.408V23.936H14.656V12.416Z" fill="%231d4ed8"/></svg>'),
+				url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 24"><path d="M0 12.416C0 8.27733 0.832 5.20533 2.496 3.2C4.16 1.152 6.912 0.0853348 10.752 0V5.504C9.216 5.67467 8.14933 6.18667 7.552 7.04C6.95467 7.89333 6.656 9.17333 6.656 10.88V11.648H10.752V23.936H0V12.416ZM14.656 12.416C14.656 8.27733 15.488 5.20533 17.152 3.2C18.816 1.152 21.568 0.0853348 25.408 0V5.504C23.872 5.67467 22.8053 6.18667 22.208 7.04C21.6107 7.89333 21.312 9.17333 21.312 10.88V11.648H25.408V23.936H14.656V12.416Z" fill="%231d4ed8" transform="rotate(180,13,12)"/></svg>');
+			background-repeat: no-repeat, no-repeat;
+			background-position: top -16% left -2%, bottom -16% right -2%;
+			background-size: 4rem auto, 4rem auto;
+
+			@media (width >= theme(--breakpoint-lg)) {
+				padding: var(--_pad);
+				margin-inline: calc(-1 * var(--_pad));
+				background-size: 8rem auto, 8rem auto;
+			}
+		}
+
+		> pre {
+			@apply bg-neutral-900 text-neutral-100 dark:bg-black dark:text-stone-100 p-4 overflow-x-auto text-sm font-mono leading-relaxed;
+			border-radius: var(--radius-sm);
+		}
+
+		> code {
+			@apply text-sm font-mono bg-neutral-200/70 dark:bg-stone-800 px-1.5 py-1;
+		}
+
+		p code,
+		li code,
+		td code {
+			@apply text-sm font-mono bg-neutral-200/70 dark:bg-stone-800 px-2;
+		}
+
+		> hr {
+			@apply border-t border-neutral-200 dark:border-stone-700 my-[--double-flow,1.5rem];
+		}
+
+		> img,
+		> video,
+		> figure img,
+		> figure video {
+			@apply max-w-full;
+		}
+
+		> img,
+		> video {
+			@apply rounded-sm overflow-hidden;
+		}
+
+		/* Breakout: afbeeldingen en gallery uitbreken naar scroll-container breedte.
+		   --scrollbar corrigeert voor de scrollbar die 100vw > beschikbare breedte maakt.
+		   padding-inline + box-sizing zorgen voor de visuele gap aan elke kant. */
+		> p:has(> picture),
+		> picture,
+		> figure,
+		> .gallery {
+			--_half: calc(var(--breakout-max) / 2);
+			--_avail: calc(100vw - var(--scrollbar, 0px));
+			width: var(--_avail);
+			max-width: var(--breakout-max);
+			margin-inline: max(calc(50% - var(--_avail) / 2), calc(50% - var(--_half)));
+			padding-inline: var(--gallery-gap, 4px);
+			box-sizing: border-box;
+		}
+
+		/* Breakout: embeds — gap via width-reductie i.p.v. padding-inline.
+		   padding-inline werkt niet voor iframes met position:absolute;inset:0. */
+		> .embed:not(.embed-video-native--portrait) {
+			--_half: calc(var(--breakout-max) / 2);
+			--_avail: calc(100vw - var(--scrollbar, 0px));
+			--_gap: var(--gallery-gap, 4px);
+			width: calc(var(--_avail) - 2 * var(--_gap));
+			max-width: calc(var(--breakout-max) - 2 * var(--_gap));
+			margin-inline: max(calc(50% - var(--_avail) / 2 + var(--_gap)), calc(50% - var(--_half) + var(--_gap)));
+		}
+
+		> p:has(> picture) > picture,
+		> picture {
+			display: block;
+			overflow: hidden;
+			border-radius: var(--radius-sm);
+		}
+
+		> figure {
+			overflow: hidden;
+			border-radius: var(--radius-sm);
+		}
+
+		> p:has(> picture) > picture img,
+		> picture img,
+		> figure img {
+			width: 100%;
+			height: auto;
+		}
+
+		> figure > figcaption {
+			@apply text-sm font-sans;
+			padding-inline: var(--container-px);
+		}
+
+		> table {
+			@apply w-full text-left border-separate border-spacing-0 border border-neutral-200 rounded-sm overflow-hidden bg-white shadow-xl;
+
+			> thead {
+				@apply font-sans font-normal;
+
+				th {
+					@apply border-b border-neutral-200;
+				}
+			}
+
+			> tbody tr + tr td,
+			> tbody tr + tr th {
+				@apply border-t border-neutral-100;
+			}
+
+			th,
+			td {
+				@apply py-2.5 px-4 align-top;
+				font-size: var(--text-md);
+			}
+
+			@media (prefers-color-scheme: dark) {
+				@apply border-neutral-800 bg-stone-900;
+
+				> thead {
+					th {
+						@apply border-neutral-800;
+					}
+				}
+
+				> tbody tr + tr td,
+				> tbody tr + tr th {
+					@apply border-neutral-800;
+				}
+			}
+		}
+
+	}
+
+	.content > :is(p, ul, ol, table) {
+		@apply text-base font-medium leading-[1.35];
+	}
+
+	.content.recipe {
+		> :is(ol, ul) > li + li {
+			margin-top: var(--flow, 1rem);
+		}
+	}
+
+	.content.is-deferred {
+		min-height: 50vh;
+	}
+
+	.content.is-revealed {
+		animation: contentReveal .4s ease both;
+	}
+
+	@keyframes contentReveal {
+		from { opacity: 0; transform: translateY(4px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+
+}
+
+@layer utilities {
+	.content p code,
+	.content li code,
+	.content td code {
+		font-size: var(--text-sm);
+	}
+
+}

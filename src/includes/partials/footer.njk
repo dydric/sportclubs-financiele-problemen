@@ -1,0 +1,76 @@
+{% set isHome = not footerLinkUrl and footerVariant !== 'feed' %}
+{% set isArchief = footerLinkUrl === '/' %}
+{% set isDoubleNav = footerVariant === 'feed' or footerLinkUrl === '/archief/' %}
+{% from "components/rss-link.njk" import rssLink %}
+<footer class="custom-footer">
+		<div class="dock u-text-sm">
+			<div class="flex gap-4 items-center justify-between w-full select-none">
+				<div>
+					{% if isHome %}
+						<span data-js="switch" data-switch-content="Liwwadden/058">Leeuwarden/NL</span>
+					{% elif isDoubleNav %}
+						<div class="flex gap-2">
+							<a href="/" class="u-button u-button--dark u-button--sm">Home</a>
+							<a href="/archief/" class="u-button u-button--dark u-button--sm">Archief</a>
+						</div>
+					{% elif isArchief %}
+						<div class="flex gap-2">
+							<a href="/" class="u-button u-button--dark u-button--sm">Home</a>
+							{{ rssLink(feedUrl, "RSS feed", "sm") }}
+						</div>
+					{% endif %}
+				</div>
+				<div class="flex-1 flex justify-end min-w-0">
+					{% if footerShowCategoryPicker and collections.feedCategories %}
+						{% set _catLabel = "Archief" %}
+						{% for _cat in collections.feedCategories %}
+							{% if _cat.slug == footerActiveCategorySlug %}
+								{% set _catLabel = _cat.name | capitalize %}
+							{% endif %}
+						{% endfor %}
+						<div class="dock-cat">
+							{# Handheld: native <select> #}
+							<label class="dock-cat__select-wrap">
+								<select data-js="category-nav" aria-label="Categorie" class="dock-cat__select">
+									<option value="/archief/"{% if not footerActiveCategorySlug %} selected{% endif %}>Archief</option>
+									{% for _cat in collections.feedCategories %}
+										<option value="/archief/{{ _cat.slug }}/"{% if _cat.slug == footerActiveCategorySlug %} selected{% endif %}>{{ _cat.name | capitalize }}</option>
+									{% endfor %}
+								</select>
+								<span class="dock-cat__select-label" aria-hidden="true">
+									{{ _catLabel }}
+									<svg class="dock-cat__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								</span>
+							</label>
+							{# Desktop: custom details dropdown #}
+							<details class="dock-cat__details" data-js="category-picker">
+								<summary class="dock-cat__summary">
+									{{ _catLabel }}
+									<svg class="dock-cat__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								</summary>
+								<nav class="dock-cat__panel" aria-label="Categorieën">
+									<a href="/archief/" class="dock-cat__option{% if not footerActiveCategorySlug %} is-active{% endif %}"{% if not footerActiveCategorySlug %} aria-current="page"{% endif %}>Archief</a>
+									{% for _cat in collections.feedCategories %}
+										<a href="/archief/{{ _cat.slug }}/" class="dock-cat__option{% if _cat.slug == footerActiveCategorySlug %} is-active{% endif %}"{% if _cat.slug == footerActiveCategorySlug %} aria-current="page"{% endif %}>{{ _cat.name | capitalize }}</a>
+									{% endfor %}
+								</nav>
+							</details>
+						</div>
+					{% elif isHome %}
+						<span data-js="clock"></span> / <span data-js="utc-offset"></span>
+					{% elif footerVariant === 'feed' %}
+						{% if hidedate %}
+						{% elif sticky %}
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 471 539" class="inline-block w-3 md:w-4 align-baseline">
+								<path class="fill-neutral-500" d="M219 285c15 9 20 28 11 44L118 523a32 32 0 1 1-55-32l112-194c9-16 28-21 44-12"/><path class="fill-red-600" d="M189 16c9-15 28-21 44-12l221 128a32 32 0 1 1-32 56l-25-15-77 157c21 35 30 78 21 121v3q-5 15-19 23-15 6-29-1L16 316a32 32 0 0 1-5-52l2-2c33-29 75-43 116-42l97-146-25-14c-16-9-21-29-12-44"/>
+							</svg>
+						{% else %}
+							<time class="text-nowrap" datetime="{{ page.date | toDateFormat('YYYY-MM-DD') }}">{{ page.date | readableDate }}</time>
+						{% endif %}
+					{% else %}
+						<span data-js="clock"></span> / <span data-js="utc-offset"></span>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+</footer>

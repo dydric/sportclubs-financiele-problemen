@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{{ title }}{% if page.url != "/" %} - {{ site.name }}{% endif %}</title>
+		{% if hidepageforseo -%}
+		<meta name="robots" content="noindex, nofollow">
+		{%- else -%}
+		<meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
+		<meta name="robots" content="index,follow">
+		<meta name="googlebot" content="index,follow">
+		<meta name="google" content="nositelinkssearchbox">
+		<meta name="google" content="notranslate">
+		<meta name="generator" content="eleventy">
+		{%- endif %}
+
+		<base href="{{ page.url }}">
+  	<link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="application-name" content="Diederik">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png?v=20260330" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg?v=20260330" />
+		<link rel="shortcut icon" href="/assets/favicon/favicon.ico?v=20260330" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png?v=20260330" />
+		<meta name="apple-mobile-web-app-title" content="Diederik" />
+		<link rel="manifest" href="/assets/favicon/site.webmanifest?v=20260330" />
+
+		<link rel="preload" href="/assets/fonts/PPNeueMontreal-Variable.woff2" as="font" type="font/woff2" crossorigin>
+
+		<meta name="color-scheme" content="light dark">
+		<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: light)">
+		<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+		<script>
+			try {
+				if (sessionStorage.getItem('dd:page-enter') === '1') {
+					document.documentElement.classList.add('is-page-entering');
+					sessionStorage.removeItem('dd:page-enter');
+				}
+			} catch (e) {}
+		</script>
+		<link rel="stylesheet" href="/css/tw.css?v={% cacheBuster %}">
+
+		<link rel="alternate" type="application/atom+xml" title="{{ feedTitle or site.name }}" href="{{ feedUrl or '/rss/index.xml' }}">
+	</head>
+	<body class="flex h-screen-dynamic flex-col min-w-75 text-fg relative overflow-x-clip">
+		<div class="main-noise-layer" aria-hidden="true"></div>
+		<div class="page-fade page-fade--top" aria-hidden="true"></div>
+		<div class="page-fade page-fade--bottom" aria-hidden="true"></div>
+		{{ content | safe }}
+		<script src="/js/core.js?v={% cacheBuster %}" defer></script>
+	</body>
+</html>

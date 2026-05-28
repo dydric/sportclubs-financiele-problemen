@@ -1,0 +1,19 @@
+<div class="w-unit-5 col-span-5 ">
+	<div class="bg-neutral-300 dark:bg-neutral-700 text-black dark:text-white p-large rounded h-full">
+		<div class="flex flex-wrap justify-start gap-2">
+			<div class="w-full">
+				<h2 class="text-lg font-extrabold block tracking-tight whitespace-nowrap w-full ">Top Artiesten</h2>
+				<span class="text-base font-semibold tracking-tight whitespace-nowrap truncate opacity-50">Afgelopen maand</span>
+			</div>
+			{%- set max_items = 10 -%}
+				{% for artist in lastfm.topArtists %}
+					{%- if loop.index <= max_items -%}
+						<a href="https://last.fm/music/{{ artist.name | url | safe }}" target="_blank" rel="noopener noreferrer" class="group flex-initial flex truncate gap-1 bg-white px-small py-2 rounded-full text-neutral-800 max-w-[65%]">
+							<span class="text-base font-bold tracking-tight whitespace-nowrap truncate group-hover:opacity-80">{{ artist.name }}</span>
+							{# <span class="text-base font-semibold tracking-tight whitespace-nowrap truncate opacity-50">{{ artist.playcount }} plays</span> #}
+						</a>
+					{% endif %}
+				{% endfor %}
+		</div>
+	</div>
+</div>

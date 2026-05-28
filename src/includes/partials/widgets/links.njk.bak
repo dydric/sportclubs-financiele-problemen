@@ -1,0 +1,21 @@
+<div class="widget rounded-lg bg-white">
+	<div class="widget__content">
+
+		<span class=" font-bold uppercase">Artikel:</span>
+
+		{% set count = 1 %}
+		{% for link in links.data.items %}
+			{% if count == 1 %}
+				<a href="{{ link.link }}" class="line-clamp-3" target="_blank" rel="noopener noreferrer">
+					<span class="font-bold" target="_blank" rel="noopener noreferrer">
+						{{ link.title | replace("[toread]", "") | replace("[priv]", "") | trim }}
+					</span>
+					{% if link.content %}
+						<span>{{ link.content }}</span>
+					{% endif %}
+				</a>
+			{% endif %}
+			{% set count = count + 1 %}
+		{% endfor %}
+	</div>{# /widget__content #}
+</div>{# /widget #}

@@ -1,0 +1,188 @@
+@config "./tailwind.config.js";
+@import "tailwindcss";
+
+/* Tell Tailwind v4 where to scan for classes (Eleventy + templates) */
+@source "../../**/*.{html,js,njk,md,vue,jsx,tsx,svelte}";
+
+@theme {
+	/* Colors */
+	--color-page: var(--page-bg);
+	--color-surface: var(--surface-bg);
+
+	/* Accent */
+	--color-accent-1: theme(colors.blue.700);
+
+	/* Header */
+	--color-header-bg: theme(colors.neutral.950);
+	--color-header-fg: theme(colors.neutral.100);
+
+	/* Footer */
+	--color-footer-bg: theme(colors.neutral.100);
+	--color-footer-fg: theme(colors.neutral.800);
+
+	/* Scrollbar */
+	--sb-track-color: var(--page-bg);
+	--sb-thumb-color: var(--color-accent-1);
+	--sb-size: 10px;
+
+	/* Tekst / links (dark mode aware via :root vars) */
+	--color-fg: var(--fg);
+	--color-link-hover: var(--link-hover);
+
+	/* Borders (dark mode aware via :root vars) */
+	--color-border: var(--border);
+	--color-footer-border: var(--footer-border);
+
+	/* Later toe te voegen: */
+	/* --color-fg-muted: var(--fg-muted); */
+	/* --color-fg-accent: var(--fg-accent); */
+
+/* Fonts */
+--font-sans: "PPNeueMontreal", system-ui, sans-serif;
+--font-mono: "iAWriterMono", ui-monospace, monospace;
+--font-handwritten: "PermanentMarker", "Segoe Script", "Bradley Hand", cursive;
+
+	/* Font sizes */
+	--text-xs: var(--font-size-xs);
+	--text-sm: var(--font-size-sm);
+	--text-md: var(--font-size-md);
+	--text-base: var(--font-size-base);
+	--text-lg: var(--font-size-lg);
+	--text-xl: var(--font-size-xl);
+	--text-2xl: var(--font-size-2xl);
+	--text-3xl: var(--font-size-3xl);
+
+	/* Letter spacing */
+	--tracking-tightest: -0.05ch;
+
+	/* Spacing tokens */
+	--spacing-header: var(--header-height);
+	--spacing-footer: calc(var(--footer-height, 74px) + var(--dock-gap, 2rem));
+	--spacing-container: var(--container-px);
+
+	/* Custom sizes */
+	--height-screen-dynamic: calc(var(--vh) * 100);
+	--min-height-screen-dynamic: calc(var(--vh) * 100);
+}
+
+:root {
+	--vh: 1vh;
+
+	--fg: theme(colors.neutral.800);
+	--link-hover: var(--color-accent-1);
+
+	/* Image breakout & gallery */
+	--breakout-max: 1200px;
+	--gallery-gap: 4px;
+
+	--border: theme(colors.stone.300);
+
+	--font-size-xs: .875rem;
+	--font-size-sm: 1rem;
+	--font-size-md: 1.125rem;
+	--font-size-base: 1.25rem;
+	--font-size-lg: 1.33rem;
+	--font-size-xl: 1.5rem;
+	--font-size-2xl: 1.75rem;
+	--font-size-3xl: 2rem;
+
+	--flow: 1.25rem;
+	--double-flow: 2.5rem;
+	--header-height: 88px;
+	--container-px: 1.5rem;
+	--outer-px: 1rem;
+	--dock-gap: calc(2rem + env(safe-area-inset-bottom, 0px));
+	--dock-item-h: 2.375rem; /* 38px — hoogte van buttons/selects in het dock */
+
+	--page-bg: theme(colors.stone.200);
+	--surface-bg: theme(colors.neutral.100);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--page-bg: theme(colors.neutral.900);
+		--surface-bg: theme(colors.neutral.950);
+
+		--fg: #f0f0f0;
+
+		--border: theme(colors.stone.700);
+		--color-footer-bg: #0f0f0f;
+		--color-footer-fg: #f0f0f0;
+
+		/* Header */
+		--color-header-bg: theme(colors.neutral.950);
+		--color-header-fg: theme(colors.neutral.100);
+
+		/* Footer */
+		--color-footer-bg: theme(colors.neutral.950);
+		--color-footer-fg: theme(colors.neutral.100);
+	}
+}
+
+@media (width >= theme(--breakpoint-sm)) {
+	:root {
+		--flow: 1.5rem;
+		--double-flow: 3rem;
+	}
+}
+
+@media (width >= theme(--breakpoint-md)) {
+	:root {
+		--font-size-xl: 1.75rem;
+		--font-size-2xl: 2rem;
+		--font-size-3xl: 2.5rem;
+
+		--flow: 1.75rem;
+		--double-flow: 3.5rem;
+	}
+}
+
+@media (width >= theme(--breakpoint-lg)) {
+	:root {
+		--dock-item-h: 2.625rem; /* 42px — groter door grotere font-size op desktop */
+		--font-size-xs: 1rem;
+		--font-size-sm: 1.125rem;
+		--font-size-md: 1.25rem;
+		--font-size-base: 1.5rem;
+		--font-size-lg: 1.5rem;
+		--font-size-xl: 2.5rem;
+		--font-size-2xl: 2.75rem;
+		--font-size-3xl: 3rem;
+
+		--header-height: 104px;
+		--container-px: 2.5rem;
+		--outer-px: 2.5rem;
+	}
+}
+
+@media (width >= theme(--breakpoint-xl)) {
+	:root {
+		--dock-item-h: 2.875rem; /* 46px */
+		--font-size-xs: 1.125rem;
+		--font-size-sm: 1.25rem;
+		--font-size-md: 1.33rem;
+		--font-size-base: 1.75rem;
+		--font-size-lg: 2rem;
+		--font-size-xl: 3rem;
+		--font-size-2xl: 3.5rem;
+		--font-size-3xl: 4rem;
+
+		--flow: 2rem;
+		--double-flow: 4rem;
+		--header-height: 120px;
+		--dock-gap: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+	}
+}
+
+@media (display-mode: standalone) {
+	:root { --dock-gap: calc(2.25rem + env(safe-area-inset-bottom, 0px)); }
+
+	@media (width >= theme(--breakpoint-lg)) {
+		:root { --dock-gap: calc(2.5rem + env(safe-area-inset-bottom, 0px)); }
+	}
+}
+
+/* Custom layers */
+@import "./base/_.css";
+@import "./components/_.css";
+@import "./utilities/_.css";
