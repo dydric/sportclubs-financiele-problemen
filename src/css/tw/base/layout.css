@@ -33,6 +33,14 @@
 		mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
 	}
 
+	.page-fade--bottom {
+		bottom: 0;
+		height: 4rem;
+		background: linear-gradient(to top, var(--page-bg) 0%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to top, black 35%, transparent 100%);
+		mask-image: linear-gradient(to top, black 35%, transparent 100%);
+	}
+
 	@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
 		.page-fade--top {
 			backdrop-filter: blur(4px);

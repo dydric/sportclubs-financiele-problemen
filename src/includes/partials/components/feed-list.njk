@@ -1,10 +1,10 @@
 {% macro feedList(items) %}
   {% for item in items %}
-    <details class="group border-t-2 border-border{% if loop.last %} border-b-2{% endif %}">
+    <details class="group border-t-2 border-border{% if loop.last %} border-b-2{% endif %} transition-colors duration-200 not-open:hover:bg-white/70 not-open:focus-within:bg-white/70 not-open:hover:shadow-xl not-open:focus-within:shadow-xl">
       <summary class="container block py-3 cursor-pointer list-none select-none">
-        <span class="flex items-baseline gap-3">
+        <span class="flex items-center gap-3">
           <span class="u-text-xl leading-[1.1] lg:tracking-tight flex-1">{{ item.data.title }}</span>
-          <span class="shrink-0 text-neutral-400 transition-transform duration-200 group-open:rotate-180 font-mono text-sm" aria-hidden="true">▼</span>
+          <span class="shrink-0 size-[1.75em] lg:size-[2.25em] rounded-full bg-neutral-900 text-white flex items-center justify-center transition-colors duration-200 group-hover:bg-linear-to-br group-hover:from-orange-400 group-hover:to-orange-600 shadow-xl" aria-hidden="true"><span class="size-[0.85em] lg:size-[1.1em] transition-transform duration-200 group-open:rotate-180 block"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg></span></span>
         </span>
       </summary>
       <div class="container pb-6 pt-2">
